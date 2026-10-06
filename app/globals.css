@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --background: #faf7f4;
+  --foreground: #211c20;
+  --primary: #00674f;
+  --primary-foreground: #faf7f4;
+  --accent-pink: #fdc1c5;
+  --accent-gold: #ffc738;
+  --muted: #666666;
+  --secondary: #fce8e0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-gold: var(--accent-gold);
+  --color-muted: var(--muted);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+  --font-elegant: var(--font-cormorant);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.font-elegant {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+/* Espace pour la barre de navigation mobile fixe */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 4.25rem;
+  }
+}
