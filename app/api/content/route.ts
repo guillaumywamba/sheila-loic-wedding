@@ -22,6 +22,12 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "JSON invalide" }, { status: 400 });
   }
 
-  await saveSiteContent(body);
-  return NextResponse.json({ ok: true });
+  try {
+    await saveSiteContent(body);
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Erreur d'enregistrement";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

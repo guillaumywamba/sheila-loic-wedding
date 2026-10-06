@@ -1,0 +1,25 @@
+# Ajoute GITHUB_TOKEN sur Vercel pour la console admin (à lancer une fois).
+# Prérequis : secrets VERCEL_TOKEN, VERCEL_PROJECT_ID, SITE_STORAGE_GITHUB_TOKEN dans le dépôt.
+name: Configure Vercel storage env
+
+on:
+  workflow_dispatch:
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set GITHUB_TOKEN on Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          SITE_STORAGE_GITHUB_TOKEN: ${{ secrets.SITE_STORAGE_GITHUB_TOKEN }}
+        run: |
+          curl -fsS -X POST "https://api.vercel.com/v10/projects/${VERCEL_PROJECT_ID}/env" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"key\":\"GITHUB_TOKEN\",\"value\":\"${SITE_STORAGE_GITHUB_TOKEN}\",\"type\":\"encrypted\",\"target\":[\"production\",\"preview\",\"development\"]}"
+          curl -fsS -X POST "https://api.vercel.com/v10/projects/${VERCEL_PROJECT_ID}/env" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"key\":\"GITHUB_REPO\",\"value\":\"guillaumywamba/sheila-loic-wedding\",\"type\":\"plain\",\"target\":[\"production\",\"preview\",\"development\"]}"
