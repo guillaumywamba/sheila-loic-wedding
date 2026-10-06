@@ -2,6 +2,8 @@ import { WeddingSite } from "@/components/site/WeddingSite";
 import { getSiteContent } from "@/lib/content-storage";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const content = await getSiteContent();
   return {

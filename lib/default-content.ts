@@ -304,6 +304,6 @@ export const defaultSiteContent: SiteContent = {
   },
   footer: {
     copyright: "© 2026 Sheila & Loïc",
-    credit: "Design By @Wedding Branding",
+    credit: "Design By LeCousinEnQuestion",
   },
 };

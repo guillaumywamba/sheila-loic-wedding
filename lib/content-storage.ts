@@ -4,6 +4,11 @@ import { promises as fs } from "fs";
 import path from "path";
 import type { RsvpSubmission, SiteContent } from "@/types/site";
 import { defaultSiteContent } from "@/lib/default-content";
+import {
+  readGitHubJson,
+  useGitHubStorage,
+  writeGitHubJson,
+} from "@/lib/github-storage";
 
 const dataDir = path.join(process.cwd(), "data");
 const contentPath = path.join(dataDir, "site-content.json");
@@ -13,6 +18,8 @@ const CONTENT_BLOB = "site-content.json";
 const RSVP_BLOB = "rsvps.json";
 const CONTENT_REDIS_KEY = "wedding:site-content";
 const RSVP_REDIS_KEY = "wedding:rsvps";
+const GITHUB_CONTENT_PATH = "data/site-content.json";
+const GITHUB_RSVP_PATH = "data/rsvps.json";
 
 function redisClient(): Redis | null {
   if (
@@ -46,19 +53,6 @@ async function writeJsonFile(filePath: string, data: unknown): Promise<void> {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
 }
 
-async function blobReadJson<T>(pathname: string, fallback: T): Promise<T> {
-  try {
-    const meta = await head(pathname, {
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    });
-    const res = await fetch(meta.url);
-    if (!res.ok) return fallback;
-    return (await res.json()) as T;
-  } catch {
-    return fallback;
-  }
-}
-
 async function blobWriteJson(pathname: string, data: unknown): Promise<void> {
   await put(pathname, JSON.stringify(data), {
     access: "public",
@@ -85,21 +79,21 @@ export async function getSiteContent(): Promise<SiteContent> {
       const res = await fetch(meta.url);
       if (res.ok) return (await res.json()) as SiteContent;
     } catch {
-      /* premier déploiement : initialiser le blob */
+      /* initialiser le blob */
     }
     await blobWriteJson(CONTENT_BLOB, defaultSiteContent);
     return defaultSiteContent;
+  }
+
+  if (useGitHubStorage()) {
+    const stored = await readGitHubJson<SiteContent>(GITHUB_CONTENT_PATH);
+    if (stored) return stored;
   }
 
   try {
     const raw = await fs.readFile(contentPath, "utf-8");
     return JSON.parse(raw) as SiteContent;
   } catch {
-    try {
-      await writeJsonFile(contentPath, defaultSiteContent);
-    } catch {
-      /* FS non writable (ex. Vercel) — contenu par défaut en lecture seule */
-    }
     return defaultSiteContent;
   }
 }
@@ -116,11 +110,20 @@ export async function saveSiteContent(content: SiteContent): Promise<void> {
     return;
   }
 
+  if (useGitHubStorage()) {
+    await writeGitHubJson(
+      GITHUB_CONTENT_PATH,
+      content,
+      "Mise à jour du contenu du site (admin)",
+    );
+    return;
+  }
+
   try {
     await writeJsonFile(contentPath, content);
   } catch {
     throw new Error(
-      "STORAGE_UNAVAILABLE: configurez Upstash Redis ou Vercel Blob en production.",
+      "STORAGE_UNAVAILABLE: ajoutez GITHUB_TOKEN sur Vercel, ou Blob/Upstash.",
     );
   }
 }
@@ -133,7 +136,21 @@ export async function getRsvpSubmissions(): Promise<RsvpSubmission[]> {
   }
 
   if (useBlob()) {
-    return blobReadJson(RSVP_BLOB, []);
+    try {
+      const meta = await head(RSVP_BLOB, {
+        token: process.env.BLOB_READ_WRITE_TOKEN,
+      });
+      const res = await fetch(meta.url);
+      if (res.ok) return (await res.json()) as RsvpSubmission[];
+    } catch {
+      /* empty */
+    }
+    return [];
+  }
+
+  if (useGitHubStorage()) {
+    const list = await readGitHubJson<RsvpSubmission[]>(GITHUB_RSVP_PATH);
+    if (list) return list;
   }
 
   return readJsonFile(rsvpPath, []);
@@ -158,6 +175,15 @@ export async function addRsvpSubmission(
 
   if (useBlob()) {
     await blobWriteJson(RSVP_BLOB, list);
+    return entry;
+  }
+
+  if (useGitHubStorage()) {
+    await writeGitHubJson(
+      GITHUB_RSVP_PATH,
+      list,
+      "Nouvelle réponse RSVP",
+    );
     return entry;
   }
 
