@@ -53,16 +53,26 @@ async function writeJsonFile(filePath: string, data: unknown): Promise<void> {
   await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
 }
 
+function blobTokenOption() {
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  return token ? { token } : {};
+}
+
 async function blobWriteJson(pathname: string, data: unknown): Promise<void> {
   await put(pathname, JSON.stringify(data), {
     access: "public",
     addRandomSuffix: false,
     allowOverwrite: true,
-    token: process.env.BLOB_READ_WRITE_TOKEN,
+    ...blobTokenOption(),
   });
 }
 
 export async function getSiteContent(): Promise<SiteContent> {
+  if (useGitHubStorage()) {
+    const stored = await readGitHubJson<SiteContent>(GITHUB_CONTENT_PATH);
+    if (stored) return stored;
+  }
+
   const redis = redisClient();
   if (redis) {
     const stored = await redis.get<SiteContent>(CONTENT_REDIS_KEY);
@@ -71,11 +81,9 @@ export async function getSiteContent(): Promise<SiteContent> {
     return defaultSiteContent;
   }
 
-  if (useBlob()) {
+  if (useBlob() || process.env.VERCEL === "1") {
     try {
-      const meta = await head(CONTENT_BLOB, {
-        token: process.env.BLOB_READ_WRITE_TOKEN,
-      });
+      const meta = await head(CONTENT_BLOB, blobTokenOption());
       const res = await fetch(meta.url);
       if (res.ok) return (await res.json()) as SiteContent;
     } catch {
@@ -83,11 +91,6 @@ export async function getSiteContent(): Promise<SiteContent> {
     }
     await blobWriteJson(CONTENT_BLOB, defaultSiteContent);
     return defaultSiteContent;
-  }
-
-  if (useGitHubStorage()) {
-    const stored = await readGitHubJson<SiteContent>(GITHUB_CONTENT_PATH);
-    if (stored) return stored;
   }
 
   try {
@@ -99,17 +102,6 @@ export async function getSiteContent(): Promise<SiteContent> {
 }
 
 export async function saveSiteContent(content: SiteContent): Promise<void> {
-  const redis = redisClient();
-  if (redis) {
-    await redis.set(CONTENT_REDIS_KEY, content);
-    return;
-  }
-
-  if (useBlob()) {
-    await blobWriteJson(CONTENT_BLOB, content);
-    return;
-  }
-
   if (useGitHubStorage()) {
     await writeGitHubJson(
       GITHUB_CONTENT_PATH,
@@ -119,38 +111,47 @@ export async function saveSiteContent(content: SiteContent): Promise<void> {
     return;
   }
 
+  const redis = redisClient();
+  if (redis) {
+    await redis.set(CONTENT_REDIS_KEY, content);
+    return;
+  }
+
+  if (useBlob() || process.env.VERCEL === "1") {
+    await blobWriteJson(CONTENT_BLOB, content);
+    return;
+  }
+
   try {
     await writeJsonFile(contentPath, content);
   } catch {
     throw new Error(
-      "STORAGE_UNAVAILABLE: ajoutez GITHUB_TOKEN sur Vercel, ou Blob/Upstash.",
+      "Stockage indisponible : ajoutez GITHUB_TOKEN (recommandé) ou un Blob store Vercel.",
     );
   }
 }
 
 export async function getRsvpSubmissions(): Promise<RsvpSubmission[]> {
+  if (useGitHubStorage()) {
+    const list = await readGitHubJson<RsvpSubmission[]>(GITHUB_RSVP_PATH);
+    if (list) return list;
+  }
+
   const redis = redisClient();
   if (redis) {
     const list = await redis.get<RsvpSubmission[]>(RSVP_REDIS_KEY);
     return list ?? [];
   }
 
-  if (useBlob()) {
+  if (useBlob() || process.env.VERCEL === "1") {
     try {
-      const meta = await head(RSVP_BLOB, {
-        token: process.env.BLOB_READ_WRITE_TOKEN,
-      });
+      const meta = await head(RSVP_BLOB, blobTokenOption());
       const res = await fetch(meta.url);
       if (res.ok) return (await res.json()) as RsvpSubmission[];
     } catch {
       /* empty */
     }
     return [];
-  }
-
-  if (useGitHubStorage()) {
-    const list = await readGitHubJson<RsvpSubmission[]>(GITHUB_RSVP_PATH);
-    if (list) return list;
   }
 
   return readJsonFile(rsvpPath, []);
@@ -167,23 +168,19 @@ export async function addRsvpSubmission(
   };
   list.unshift(entry);
 
+  if (useGitHubStorage()) {
+    await writeGitHubJson(GITHUB_RSVP_PATH, list, "Nouvelle réponse RSVP");
+    return entry;
+  }
+
   const redis = redisClient();
   if (redis) {
     await redis.set(RSVP_REDIS_KEY, list);
     return entry;
   }
 
-  if (useBlob()) {
+  if (useBlob() || process.env.VERCEL === "1") {
     await blobWriteJson(RSVP_BLOB, list);
-    return entry;
-  }
-
-  if (useGitHubStorage()) {
-    await writeGitHubJson(
-      GITHUB_RSVP_PATH,
-      list,
-      "Nouvelle réponse RSVP",
-    );
     return entry;
   }
 

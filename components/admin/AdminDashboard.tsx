@@ -62,6 +62,7 @@ export function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [rsvps, setRsvps] = useState<RsvpSubmission[]>([]);
+  const [storageOk, setStorageOk] = useState<boolean | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/content");
@@ -70,6 +71,10 @@ export function AdminDashboard() {
 
   useEffect(() => {
     void load();
+    void fetch("/api/storage-status")
+      .then((r) => r.json())
+      .then((s: { ready?: boolean }) => setStorageOk(Boolean(s.ready)))
+      .catch(() => setStorageOk(false));
   }, [load]);
 
   useEffect(() => {
@@ -89,7 +94,12 @@ export function AdminDashboard() {
       body: JSON.stringify(content),
     });
     setSaving(false);
-    setMessage(res.ok ? "Enregistré avec succès." : "Erreur lors de l'enregistrement.");
+    if (res.ok) {
+      setMessage("Enregistré avec succès.");
+      return;
+    }
+    const data = (await res.json().catch(() => ({}))) as { error?: string };
+    setMessage(data.error ?? "Erreur lors de l'enregistrement.");
   }
 
   async function logout() {
@@ -160,6 +170,13 @@ export function AdminDashboard() {
             </button>
           </div>
         </div>
+        {storageOk === false && (
+          <p className="border-t border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm text-amber-950">
+            Stockage non configuré sur Vercel : ajoutez la variable{" "}
+            <strong>GITHUB_TOKEN</strong> (token GitHub avec accès au dépôt) ou
+            créez un <strong>Blob store</strong> dans Storage, puis redéployez.
+          </p>
+        )}
         {message && (
           <p className="border-t border-black/5 bg-accent-pink/30 px-4 py-2 text-center text-sm">
             {message}

@@ -1,7 +1,12 @@
 const DEFAULT_REPO = "guillaumywamba/sheila-loic-wedding";
+const DEFAULT_BRANCH = "master";
 
 function getRepo(): string {
   return process.env.GITHUB_REPO ?? DEFAULT_REPO;
+}
+
+function getBranch(): string {
+  return process.env.GITHUB_BRANCH ?? DEFAULT_BRANCH;
 }
 
 function getToken(): string | undefined {
@@ -21,15 +26,16 @@ async function fetchGitHubFile(path: string): Promise<GitHubFile | null> {
   const token = getToken();
   if (!token) return null;
 
+  const ref = encodeURIComponent(getBranch());
   const res = await fetch(
-    `https://api.github.com/repos/${getRepo()}/contents/${path}`,
+    `https://api.github.com/repos/${getRepo()}/contents/${path}?ref=${ref}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
       },
-      next: { revalidate: 0 },
+      cache: "no-store",
     },
   );
 
@@ -62,6 +68,7 @@ export async function writeGitHubJson(
   const existing = await fetchGitHubFile(path);
   const body: Record<string, string> = {
     message,
+    branch: getBranch(),
     content: Buffer.from(JSON.stringify(data, null, 2)).toString("base64"),
   };
   if (existing?.sha) body.sha = existing.sha;
