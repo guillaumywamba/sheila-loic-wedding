@@ -42,3 +42,5 @@ next-env.d.ts
 
 # données locales (contenu éditable + RSVP)
 /data/
+
+.vercel
