@@ -387,7 +387,7 @@
     "title": "RSVP",
     "description": "Afin de nous permettre d'organiser au mieux cet événement, nous vous remercions de bien vouloir confirmer votre présence ou votre absence avant le 15 Mars 2027.",
     "deadlineNote": "Date limite : 15 Mars 2027",
-    "submitLabel": "Confirmer Votre Présence",
+    "submitLabel": "Envoyer ",
     "successTitle": "Merci!",
     "successMessage": "Votre réponse a bien été enregistrée."
   },
