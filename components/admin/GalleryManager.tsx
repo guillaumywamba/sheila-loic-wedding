@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadImageFile } from "@/lib/upload-image-client";
 import type { SiteContent } from "@/types/site";
 import { useRef, useState } from "react";
 
@@ -23,25 +24,21 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
     let added = 0;
 
     for (const file of Array.from(fileList)) {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("folder", "gallery");
-
-      const res = await fetch("/api/upload", { method: "POST", body: form });
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (!res.ok || !data.url) {
-        setFeedback(data.error ?? "Échec de l'ajout d'une photo.");
-        continue;
+      try {
+        const url = await uploadImageFile(file, "gallery");
+        photos = [
+          ...photos,
+          {
+            url,
+            alt: `Photo ${photos.length + 1}`,
+          },
+        ];
+        added += 1;
+      } catch (err) {
+        setFeedback(
+          err instanceof Error ? err.message : "Échec de l'ajout d'une photo.",
+        );
       }
-
-      photos = [
-        ...photos,
-        {
-          url: data.url,
-          alt: `Photo ${photos.length + 1}`,
-        },
-      ];
-      added += 1;
     }
 
     if (added > 0) {
@@ -87,7 +84,7 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
             <circle cx="8.5" cy="10" r="1.5" fill="currentColor" stroke="none" />
             <path d="M3 16l5.5-5 4 3.5L17 10l4 4" />
           </svg>
-          {uploading ? "Import..." : "Ajouter depuis la galerie"}
+          {uploading ? "Import..." : "Choisir une image"}
         </button>
         <input
           ref={inputRef}

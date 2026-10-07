@@ -1,6 +1,7 @@
 "use client";
 
 import { GalleryManager } from "@/components/admin/GalleryManager";
+import { ImagePickerField } from "@/components/admin/ImagePickerField";
 import { RsvpMonitoring } from "@/components/admin/RsvpMonitoring";
 import { defaultSiteContent } from "@/lib/default-content";
 import type { RsvpSubmission, SiteContent } from "@/types/site";
@@ -268,9 +269,11 @@ export function AdminDashboard() {
 
         {tab === "hero" && (
           <div className="space-y-4 rounded-xl bg-white p-6 shadow-sm">
-            <Field
-              label="Image (URL)"
+            <ImagePickerField
+              label="Image d’accueil (hero)"
               value={c.hero.image}
+              folder="hero"
+              hint="Ouvre la galerie ou les fichiers de votre appareil."
               onChange={(v) => setContent({ ...c, hero: { ...c.hero, image: v } })}
             />
             <Field label="Surtitre" value={c.hero.eyebrow} onChange={(v) => setContent({ ...c, hero: { ...c.hero, eyebrow: v } })} />
@@ -345,10 +348,11 @@ export function AdminDashboard() {
             />
             <p className="text-xs font-semibold uppercase text-muted">Carousel images</p>
             {c.welcome.carouselImages.map((img, i) => (
-              <div key={i} className="grid gap-2 border-t pt-4 sm:grid-cols-2">
-                <Field
-                  label={`Image ${i + 1} URL`}
+              <div key={i} className="space-y-3 border-t pt-4">
+                <ImagePickerField
+                  label={`Carousel — image ${i + 1}`}
                   value={img.url}
+                  folder="welcome"
                   onChange={(v) => {
                     const carouselImages = [...c.welcome.carouselImages];
                     carouselImages[i] = { ...carouselImages[i], url: v };
@@ -356,7 +360,7 @@ export function AdminDashboard() {
                   }}
                 />
                 <Field
-                  label="Alt"
+                  label="Texte alternatif (accessibilité)"
                   value={img.alt}
                   onChange={(v) => {
                     const carouselImages = [...c.welcome.carouselImages];
@@ -364,8 +368,43 @@ export function AdminDashboard() {
                     setContent({ ...c, welcome: { ...c.welcome, carouselImages } });
                   }}
                 />
+                <button
+                  type="button"
+                  className="text-xs text-red-600 underline"
+                  onClick={() =>
+                    setContent({
+                      ...c,
+                      welcome: {
+                        ...c.welcome,
+                        carouselImages: c.welcome.carouselImages.filter(
+                          (_, j) => j !== i,
+                        ),
+                      },
+                    })
+                  }
+                >
+                  Supprimer cette image du carousel
+                </button>
               </div>
             ))}
+            <button
+              type="button"
+              className="rounded-full border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5"
+              onClick={() =>
+                setContent({
+                  ...c,
+                  welcome: {
+                    ...c.welcome,
+                    carouselImages: [
+                      ...c.welcome.carouselImages,
+                      { url: "", alt: `Photo ${c.welcome.carouselImages.length + 1}` },
+                    ],
+                  },
+                })
+              }
+            >
+              + Ajouter une image au carousel
+            </button>
           </div>
         )}
 
@@ -398,11 +437,16 @@ export function AdminDashboard() {
                   items[i] = { ...items[i], location: v };
                   setContent({ ...c, events: { ...c.events, items } });
                 }} />
-                <Field label="Image URL" value={ev.image} onChange={(v) => {
-                  const items = [...c.events.items];
-                  items[i] = { ...items[i], image: v };
-                  setContent({ ...c, events: { ...c.events, items } });
-                }} />
+                <ImagePickerField
+                  label="Image de l’événement"
+                  value={ev.image}
+                  folder="events"
+                  onChange={(v) => {
+                    const items = [...c.events.items];
+                    items[i] = { ...items[i], image: v };
+                    setContent({ ...c, events: { ...c.events, items } });
+                  }}
+                />
                 <Field label="Détails logistique" value={ev.logisticsDetails} multiline onChange={(v) => {
                   const items = [...c.events.items];
                   items[i] = { ...items[i], logisticsDetails: v };
@@ -441,7 +485,14 @@ export function AdminDashboard() {
                 />
               </div>
             ))}
-            <Field label="Image couple URL" value={c.logistics.coupleImage} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, coupleImage: v } })} />
+            <ImagePickerField
+              label="Photo du couple (logistique)"
+              value={c.logistics.coupleImage}
+              folder="logistics"
+              onChange={(v) =>
+                setContent({ ...c, logistics: { ...c.logistics, coupleImage: v } })
+              }
+            />
             {c.logistics.venuesLines.map((line, i) => (
               <Field
                 key={i}
@@ -500,7 +551,14 @@ export function AdminDashboard() {
           <div className="space-y-6">
             <div className="space-y-4 rounded-xl bg-white p-6 shadow-sm">
               <Field label="Titre biographie" value={c.biography.title} onChange={(v) => setContent({ ...c, biography: { ...c.biography, title: v } })} />
-              <Field label="Image biographie URL" value={c.biography.image} onChange={(v) => setContent({ ...c, biography: { ...c.biography, image: v } })} />
+              <ImagePickerField
+                label="Photo biographie"
+                value={c.biography.image}
+                folder="biography"
+                onChange={(v) =>
+                  setContent({ ...c, biography: { ...c.biography, image: v } })
+                }
+              />
               {c.biography.paragraphs.map((p, i) => (
                 <Field key={i} label={`Bio paragraphe ${i + 1}`} value={p} multiline onChange={(v) => {
                   const paragraphs = [...c.biography.paragraphs];
@@ -580,9 +638,11 @@ export function AdminDashboard() {
                     setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
                   }}
                 />
-                <Field
-                  label="URL image QR code (PayPal, etc.)"
+                <ImagePickerField
+                  label="QR code (PayPal, etc.)"
                   value={method.qrCodeUrl ?? ""}
+                  folder="gifts"
+                  hint="Importez le QR depuis votre galerie."
                   onChange={(v) => {
                     const paymentMethods = [...c.gifts.paymentMethods];
                     paymentMethods[mi] = { ...paymentMethods[mi], qrCodeUrl: v };
