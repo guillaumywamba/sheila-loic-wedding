@@ -47,6 +47,29 @@ body {
   font-family: var(--font-cormorant), Georgia, serif;
 }
 
+/* Texte courant : justification propre (FR) */
+.site-justify {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-wrap: pretty;
+  line-height: 1.75;
+}
+
+.site-justify-block {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-wrap: pretty;
+}
+
+.site-justify-block > p,
+.site-justify-block > li {
+  line-height: 1.75;
+}
+
 /* Espace pour la barre de navigation mobile fixe */
 @media (max-width: 767px) {
   body {

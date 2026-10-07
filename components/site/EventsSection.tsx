@@ -22,7 +22,9 @@ export function EventsSection({ title, subtitle, items }: Props) {
           <h2 className="font-display text-3xl font-semibold text-primary md:text-4xl">
             {title}
           </h2>
-          <p className="mt-2 text-sm text-muted md:text-base">{subtitle}</p>
+          <p className="site-justify mx-auto mt-2 max-w-2xl text-sm text-muted md:text-base">
+            {subtitle}
+          </p>
         </div>
 
         <div className="mb-8 flex flex-wrap justify-center gap-2">
@@ -64,7 +66,7 @@ export function EventsSection({ title, subtitle, items }: Props) {
             <h4 className="mt-6 font-display text-lg text-primary">
               {event.logisticsTitle}
             </h4>
-            <p className="mt-2 whitespace-pre-line leading-relaxed text-foreground/90">
+            <p className="site-justify mt-2 whitespace-pre-line text-foreground/90">
               {event.logisticsDetails}
             </p>
           </div>

@@ -47,7 +47,7 @@ export function RsvpForm({ content }: Props) {
     return (
       <div className="mx-auto max-w-lg rounded-2xl border border-primary/20 bg-white p-8 text-center shadow-sm">
         <h3 className="font-display text-3xl text-primary">{content.successTitle}</h3>
-        <p className="mt-3 text-muted">{content.successMessage}</p>
+        <p className="site-justify mt-3 text-muted">{content.successMessage}</p>
         <button
           type="button"
           onClick={() => setStatus("idle")}

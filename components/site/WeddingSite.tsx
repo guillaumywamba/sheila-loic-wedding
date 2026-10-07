@@ -15,7 +15,7 @@ export function WeddingSite({ content }: Props) {
   const c = content;
 
   return (
-    <>
+    <div className="site-public">
       <SiteNavigation logo={c.meta.logo} items={c.navigation} />
 
       <section id="accueil" className="scroll-mt-20">
@@ -66,12 +66,14 @@ export function WeddingSite({ content }: Props) {
             <h2 className="font-display text-3xl text-primary md:text-4xl">
               {c.welcome.title}
             </h2>
-            <div className="mt-6 space-y-4 leading-relaxed text-foreground/90">
+            <div className="site-justify-block mt-6 space-y-4 text-foreground/90">
               {c.welcome.paragraphs.map((p) => (
-                <p key={p.slice(0, 40)}>{p}</p>
+                <p key={p.slice(0, 40)} className="site-justify">
+                  {p}
+                </p>
               ))}
             </div>
-            <p className="font-elegant mt-8 whitespace-pre-line text-lg italic text-primary">
+            <p className="font-elegant site-justify mt-8 whitespace-pre-line text-lg italic text-primary">
               {c.welcome.signature}
             </p>
           </div>
@@ -90,16 +92,20 @@ export function WeddingSite({ content }: Props) {
           <h2 className="font-display text-center text-3xl text-primary md:text-4xl">
             {c.logistics.title}
           </h2>
-          <p className="mt-4 text-center font-medium">{c.logistics.weddingDates}</p>
+          <p className="site-justify mx-auto mt-4 max-w-2xl text-center font-medium">
+            {c.logistics.weddingDates}
+          </p>
 
           <div className="mt-12 grid gap-10 md:grid-cols-2">
             <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm">
               <h3 className="font-display text-xl text-primary">
                 {c.logistics.venuesTitle}
               </h3>
-              <ul className="mt-4 space-y-2 text-sm leading-relaxed md:text-base">
+              <ul className="site-justify-block mt-4 space-y-2 text-sm md:text-base">
                 {c.logistics.venuesLines.map((line) => (
-                  <li key={line}>{line}</li>
+                  <li key={line} className="site-justify">
+                    {line}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -107,7 +113,7 @@ export function WeddingSite({ content }: Props) {
               <h3 className="font-display text-xl text-primary">
                 {c.logistics.dressCodeTitle}
               </h3>
-              <p className="mt-4 leading-relaxed">{c.logistics.dressCode}</p>
+              <p className="site-justify mt-4">{c.logistics.dressCode}</p>
             </div>
           </div>
 
@@ -125,7 +131,9 @@ export function WeddingSite({ content }: Props) {
               <h3 className="font-display text-2xl text-primary">
                 {c.logistics.accommodationTitle}
               </h3>
-              <p className="mt-2 text-muted">{c.logistics.accommodationSubtitle}</p>
+              <p className="site-justify mt-2 text-muted">
+                {c.logistics.accommodationSubtitle}
+              </p>
               <AccommodationSection
                 title="Hébergements recommandés"
                 subtitle=""
@@ -144,9 +152,11 @@ export function WeddingSite({ content }: Props) {
                 {c.biography.title}
               </h2>
               <p className="font-display mt-2 text-xl">{c.biography.coupleName}</p>
-              <div className="mt-6 space-y-4 leading-relaxed">
+              <div className="site-justify-block mt-6 space-y-4">
                 {c.biography.paragraphs.map((p) => (
-                  <p key={p.slice(0, 40)}>{p}</p>
+                  <p key={p.slice(0, 40)} className="site-justify">
+                    {p}
+                  </p>
                 ))}
               </div>
             </div>
@@ -165,9 +175,12 @@ export function WeddingSite({ content }: Props) {
             <h2 className="font-display text-center text-3xl text-primary md:text-4xl">
               {c.story.title}
             </h2>
-            <div className="mx-auto mt-10 max-w-3xl space-y-6 leading-relaxed text-foreground/90">
+            <div className="site-justify-block mx-auto mt-10 max-w-3xl space-y-6 text-foreground/90">
               {c.story.paragraphs.map((p) => (
-                <p key={p.slice(0, 40)} className="whitespace-pre-line">
+                <p
+                  key={p.slice(0, 40)}
+                  className="site-justify whitespace-pre-line"
+                >
                   {p}
                 </p>
               ))}
@@ -182,7 +195,9 @@ export function WeddingSite({ content }: Props) {
             <h2 className="font-display text-3xl text-primary md:text-4xl">
               {c.gallery.title}
             </h2>
-            <p className="mt-2 text-muted">{c.gallery.subtitle}</p>
+            <p className="site-justify mx-auto mt-2 max-w-xl text-muted">
+              {c.gallery.subtitle}
+            </p>
           </div>
           <div className="mt-10 columns-2 gap-3 md:columns-3 lg:columns-4">
             {c.gallery.photos.map((photo) => (
@@ -206,7 +221,9 @@ export function WeddingSite({ content }: Props) {
       <section className="bg-secondary/30 py-16 md:py-20">
         <div className="mx-auto max-w-6xl px-4 text-center md:px-6">
           <h2 className="font-display text-3xl text-primary">{c.gifts.title}</h2>
-          <p className="mt-4 text-lg text-muted">{c.gifts.message}</p>
+          <p className="site-justify mx-auto mt-4 max-w-2xl text-lg text-muted">
+            {c.gifts.message}
+          </p>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {c.gifts.images.map((img) => (
               <div
@@ -232,7 +249,7 @@ export function WeddingSite({ content }: Props) {
             <h2 className="font-display text-3xl text-primary md:text-4xl">
               {c.rsvp.title}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted">
+            <p className="site-justify mx-auto mt-4 max-w-2xl text-muted">
               {c.rsvp.description}
             </p>
           </div>
@@ -268,6 +285,6 @@ export function WeddingSite({ content }: Props) {
           {c.footer.copyright} · {c.footer.credit}
         </p>
       </footer>
-    </>
+    </div>
   );
 }

@@ -47,7 +47,7 @@ export function AccommodationSection({ title, subtitle, tiers }: Props) {
             className="block rounded-xl border border-black/10 bg-white p-5 shadow-sm transition hover:border-primary/30 hover:shadow-md"
           >
             <p className="font-semibold text-primary">{hotel.name}</p>
-            <p className="mt-1 text-sm text-muted">{hotel.address}</p>
+            <p className="site-justify mt-1 text-sm text-muted">{hotel.address}</p>
             <p className="mt-2 text-sm font-medium text-primary">
               Voir sur Google Maps →
             </p>
