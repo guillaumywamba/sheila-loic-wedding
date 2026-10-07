@@ -14,6 +14,8 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [deleting, setDeleting] = useState(false);
 
   async function handleFiles(fileList: FileList | null) {
     if (!fileList?.length) return;
@@ -56,19 +58,52 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
     if (inputRef.current) inputRef.current.value = "";
   }
 
-  function removePhoto(index: number) {
-    onChange({
-      ...gallery,
-      photos: gallery.photos.filter((_, i) => i !== index),
+  function toggleSelect(index: number) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
     });
   }
+
+  async function deleteSelected() {
+    if (selected.size === 0) return;
+    const count = selected.size;
+    const photos = gallery.photos.filter((_, i) => !selected.has(i));
+    const nextGallery = { ...gallery, photos };
+
+    setDeleting(true);
+    setFeedback("");
+    onChange(nextGallery);
+    setSelected(new Set());
+
+    try {
+      if (onUploaded) await onUploaded(nextGallery);
+      setFeedback(
+        count === 1
+          ? "Photo supprimée et galerie enregistrée."
+          : `${count} photos supprimées et galerie enregistrée.`,
+      );
+    } catch (err) {
+      setFeedback(
+        err instanceof Error
+          ? err.message
+          : "Suppression locale — enregistrement échoué.",
+      );
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  const selectionCount = selected.size;
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
-          disabled={uploading}
+          disabled={uploading || deleting}
           onClick={() => inputRef.current?.click()}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:opacity-60"
         >
@@ -95,10 +130,48 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
           onChange={(e) => void handleFiles(e.target.files)}
         />
         <p className="text-xs text-muted">
-          Touchez l&apos;icône pour ouvrir la galerie de votre téléphone ou
-          l&apos;explorateur de fichiers.
+          Pour supprimer : sélectionnez une ou plusieurs photos ci-dessous, puis
+          appuyez sur « Supprimer la sélection ».
         </p>
       </div>
+
+      {gallery.photos.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-3">
+          <span className="text-sm text-foreground">
+            {selectionCount === 0
+              ? "Aucune photo sélectionnée"
+              : `${selectionCount} photo${selectionCount > 1 ? "s" : ""} sélectionnée${selectionCount > 1 ? "s" : ""}`}
+          </span>
+          <button
+            type="button"
+            disabled={selectionCount === 0 || deleting || uploading}
+            onClick={() => void deleteSelected()}
+            className="rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {deleting ? "Suppression..." : "Supprimer la sélection"}
+          </button>
+          {selectionCount > 0 && (
+            <button
+              type="button"
+              className="text-sm text-primary underline"
+              onClick={() => setSelected(new Set())}
+            >
+              Tout désélectionner
+            </button>
+          )}
+          {selectionCount < gallery.photos.length && (
+            <button
+              type="button"
+              className="text-sm text-muted underline"
+              onClick={() =>
+                setSelected(new Set(gallery.photos.map((_, i) => i)))
+              }
+            >
+              Tout sélectionner
+            </button>
+          )}
+        </div>
+      )}
 
       {feedback && (
         <p className="rounded-lg bg-primary/10 px-3 py-2 text-sm text-primary">
@@ -107,30 +180,43 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
       )}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-        {gallery.photos.map((photo, i) => (
-          <div
-            key={photo.url + i}
-            className="group relative overflow-hidden rounded-xl border border-black/10 bg-black/5"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photo.url}
-              alt={photo.alt}
-              className="aspect-square w-full object-cover"
-            />
+        {gallery.photos.map((photo, i) => {
+          const isSelected = selected.has(i);
+          return (
             <button
+              key={photo.url + i}
               type="button"
-              onClick={() => removePhoto(i)}
-              className="absolute right-2 top-2 rounded-full bg-black/60 px-2 py-1 text-xs text-white opacity-0 transition group-hover:opacity-100"
+              onClick={() => toggleSelect(i)}
+              className={`group relative overflow-hidden rounded-xl border-2 bg-black/5 text-left transition ${
+                isSelected
+                  ? "border-primary ring-2 ring-primary/30"
+                  : "border-black/10 hover:border-primary/40"
+              }`}
+              aria-pressed={isSelected}
+              aria-label={`${isSelected ? "Désélectionner" : "Sélectionner"} ${photo.alt}`}
             >
-              Supprimer
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={photo.url}
+                alt={photo.alt}
+                className="aspect-square w-full object-cover"
+              />
+              <span
+                className={`absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs font-bold transition ${
+                  isSelected
+                    ? "border-white bg-primary text-white"
+                    : "border-white/90 bg-black/40 text-white"
+                }`}
+              >
+                {isSelected ? "✓" : ""}
+              </span>
             </button>
-          </div>
-        ))}
+          );
+        })}
 
         <button
           type="button"
-          disabled={uploading}
+          disabled={uploading || deleting}
           onClick={() => inputRef.current?.click()}
           className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary/35 bg-primary/5 text-primary transition hover:bg-primary/10 disabled:opacity-60"
         >
