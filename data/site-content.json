@@ -89,14 +89,14 @@
     "items": [
       {
         "id": "civil",
-        "title": "Mariage Civil",
-        "date": "Vendredi 02 Avril 2027",
-        "startTime": "10h00",
-        "location": "Bonadjo - Mairie Dla 1er",
-        "image": "https://images.fillout.com/472067/mde81vgch5/generated-images/oM8noBuq9qDF4H47zo2eAs/img_I50yFLmBJ4vQQsGE.jpg",
+        "title": "",
+        "date": "",
+        "startTime": "",
+        "location": "",
+        "image": "",
         "imageAlt": "Mariage Civil",
         "logisticsTitle": "Détails Logistique",
-        "logisticsDetails": "Chers invités, Nous avons le plaisir de vous convier à notre mariage civil qui se tiendra le Vendredi 02 Avril à 10 heures à la mairie de Dla 1er. Nous vous prions d'arriver au plus tard 30 minutes avant le début de la cérémonie. Tenue souhaitée : élégante (couleurs : Bientôt disponible ...). Après la cérémonie, nous aurons le plaisir de vous recevoir au domicile familial des parents de Sheila à Bonaberi Derrière FOKOU partir de 14 heures. Nous avons hâte de partager ce moment avec vous."
+        "logisticsDetails": ""
       },
       {
         "id": "traditionnel",
