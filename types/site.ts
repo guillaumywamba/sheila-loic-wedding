@@ -40,6 +40,11 @@ export type EventItem = {
   logisticsDetails: string;
 };
 
+export type ColorSwatch = {
+  hex: string;
+  label?: string;
+};
+
 export type LogisticsContent = {
   title: string;
   weddingDates: string;
@@ -47,6 +52,8 @@ export type LogisticsContent = {
   venuesLines: string[];
   dressCodeTitle: string;
   dressCode: string;
+  colorPaletteTitle: string;
+  colorPalette: ColorSwatch[];
   accommodationTitle: string;
   accommodationSubtitle: string;
   coupleImage: string;
@@ -83,12 +90,19 @@ export type GalleryContent = {
   photos: { url: string; alt: string }[];
 };
 
+export type GiftPaymentMethod = {
+  id: string;
+  title: string;
+  details: string;
+  qrCodeUrl?: string;
+  linkUrl?: string;
+};
+
 export type GiftsContent = {
   title: string;
   message: string;
-  images: { url: string; alt: string }[];
-  detailsLabel: string;
-  detailsHref: string;
+  noPhysicalGiftsNote: string;
+  paymentMethods: GiftPaymentMethod[];
 };
 
 export type RsvpContent = {
@@ -140,8 +154,8 @@ export type SiteContent = {
 export type RsvpSubmission = {
   id: string;
   fullName: string;
-  email: string;
-  phone?: string;
+  email?: string;
+  phone: string;
   attendance: "present" | "absent";
   message?: string;
   createdAt: string;

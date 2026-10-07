@@ -14,8 +14,7 @@ export async function GET() {
   const rows = list.map((r) => ({
     Date: new Date(r.createdAt).toLocaleString("fr-FR"),
     Nom: r.fullName,
-    Email: r.email,
-    Téléphone: r.phone ?? "",
+    Téléphone: r.phone,
     Présence: r.attendance === "present" ? "Présent(e)" : "Absent(e)",
     Message: r.message ?? "",
   }));

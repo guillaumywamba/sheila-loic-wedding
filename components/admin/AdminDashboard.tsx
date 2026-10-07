@@ -418,6 +418,29 @@ export function AdminDashboard() {
             <Field label="Titre" value={c.logistics.title} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, title: v } })} />
             <Field label="Dates mariage" value={c.logistics.weddingDates} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, weddingDates: v } })} />
             <Field label="Dress code" value={c.logistics.dressCode} multiline onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, dressCode: v } })} />
+            <Field label="Titre palette couleurs" value={c.logistics.colorPaletteTitle} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, colorPaletteTitle: v } })} />
+            {c.logistics.colorPalette.map((swatch, si) => (
+              <div key={si} className="grid gap-2 sm:grid-cols-2">
+                <Field
+                  label={`Couleur ${si + 1} — hex`}
+                  value={swatch.hex}
+                  onChange={(v) => {
+                    const colorPalette = [...c.logistics.colorPalette];
+                    colorPalette[si] = { ...colorPalette[si], hex: v };
+                    setContent({ ...c, logistics: { ...c.logistics, colorPalette } });
+                  }}
+                />
+                <Field
+                  label={`Couleur ${si + 1} — libellé`}
+                  value={swatch.label ?? ""}
+                  onChange={(v) => {
+                    const colorPalette = [...c.logistics.colorPalette];
+                    colorPalette[si] = { ...colorPalette[si], label: v };
+                    setContent({ ...c, logistics: { ...c.logistics, colorPalette } });
+                  }}
+                />
+              </div>
+            ))}
             <Field label="Image couple URL" value={c.logistics.coupleImage} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, coupleImage: v } })} />
             {c.logistics.venuesLines.map((line, i) => (
               <Field
@@ -527,14 +550,55 @@ export function AdminDashboard() {
         {tab === "gifts" && (
           <div className="space-y-4 rounded-xl bg-white p-6 shadow-sm">
             <Field label="Titre" value={c.gifts.title} onChange={(v) => setContent({ ...c, gifts: { ...c.gifts, title: v } })} />
-            <Field label="Message" value={c.gifts.message} onChange={(v) => setContent({ ...c, gifts: { ...c.gifts, message: v } })} />
-            <Field label="Libellé bouton" value={c.gifts.detailsLabel} onChange={(v) => setContent({ ...c, gifts: { ...c.gifts, detailsLabel: v } })} />
-            {c.gifts.images.map((img, i) => (
-              <Field key={i} label={`Image cadeau ${i + 1} URL`} value={img.url} onChange={(v) => {
-                const images = [...c.gifts.images];
-                images[i] = { ...images[i], url: v };
-                setContent({ ...c, gifts: { ...c.gifts, images } });
-              }} />
+            <Field label="Message d’introduction" value={c.gifts.message} multiline onChange={(v) => setContent({ ...c, gifts: { ...c.gifts, message: v } })} />
+            <Field
+              label="Texte — pas de cadeaux physiques"
+              value={c.gifts.noPhysicalGiftsNote}
+              multiline
+              onChange={(v) => setContent({ ...c, gifts: { ...c.gifts, noPhysicalGiftsNote: v } })}
+            />
+            <p className="pt-2 text-xs font-semibold uppercase text-muted">Moyens de contribution</p>
+            {c.gifts.paymentMethods.map((method, mi) => (
+              <div key={method.id} className="space-y-3 rounded-lg border border-black/10 p-4">
+                <p className="font-medium text-primary">{method.title}</p>
+                <Field
+                  label="Titre affiché"
+                  value={method.title}
+                  onChange={(v) => {
+                    const paymentMethods = [...c.gifts.paymentMethods];
+                    paymentMethods[mi] = { ...paymentMethods[mi], title: v };
+                    setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
+                  }}
+                />
+                <Field
+                  label="Détails (RIB, numéro, instructions…)"
+                  value={method.details}
+                  multiline
+                  onChange={(v) => {
+                    const paymentMethods = [...c.gifts.paymentMethods];
+                    paymentMethods[mi] = { ...paymentMethods[mi], details: v };
+                    setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
+                  }}
+                />
+                <Field
+                  label="URL image QR code (PayPal, etc.)"
+                  value={method.qrCodeUrl ?? ""}
+                  onChange={(v) => {
+                    const paymentMethods = [...c.gifts.paymentMethods];
+                    paymentMethods[mi] = { ...paymentMethods[mi], qrCodeUrl: v };
+                    setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
+                  }}
+                />
+                <Field
+                  label="Lien externe (optionnel)"
+                  value={method.linkUrl ?? ""}
+                  onChange={(v) => {
+                    const paymentMethods = [...c.gifts.paymentMethods];
+                    paymentMethods[mi] = { ...paymentMethods[mi], linkUrl: v };
+                    setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
+                  }}
+                />
+              </div>
             ))}
           </div>
         )}

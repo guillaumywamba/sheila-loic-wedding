@@ -4,6 +4,8 @@ import { AccommodationSection } from "./AccommodationSection";
 import { Countdown } from "./Countdown";
 import { EventsSection } from "./EventsSection";
 import { ImageCarousel } from "./ImageCarousel";
+import { ColorPaletteStrip } from "./ColorPaletteStrip";
+import { GiftsSection } from "./GiftsSection";
 import { RsvpForm } from "./RsvpForm";
 import { SiteNavigation } from "./SiteNavigation";
 
@@ -84,7 +86,7 @@ export function WeddingSite({ content }: Props) {
       <EventsSection
         title={c.events.title}
         subtitle={c.events.subtitle}
-        items={c.events.items}
+        items={c.events.items.filter((item) => item.id !== "civil")}
       />
 
       <section id="logistique" className="scroll-mt-20 py-16 md:py-24">
@@ -114,6 +116,10 @@ export function WeddingSite({ content }: Props) {
                 {c.logistics.dressCodeTitle}
               </h3>
               <p className="site-justify mt-4">{c.logistics.dressCode}</p>
+              <ColorPaletteStrip
+                title={c.logistics.colorPaletteTitle}
+                swatches={c.logistics.colorPalette}
+              />
             </div>
           </div>
 
@@ -218,30 +224,7 @@ export function WeddingSite({ content }: Props) {
         </div>
       </section>
 
-      <section className="bg-secondary/30 py-16 md:py-20">
-        <div className="mx-auto max-w-6xl px-4 text-center md:px-6">
-          <h2 className="font-display text-3xl text-primary">{c.gifts.title}</h2>
-          <p className="site-justify mx-auto mt-4 max-w-2xl text-lg text-muted">
-            {c.gifts.message}
-          </p>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {c.gifts.images.map((img) => (
-              <div
-                key={img.url}
-                className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm"
-              >
-                <Image src={img.url} alt={img.alt} fill className="object-cover" />
-              </div>
-            ))}
-          </div>
-          <a
-            href={c.gifts.detailsHref}
-            className="mt-8 inline-block rounded-full border-2 border-primary px-8 py-3 text-sm font-semibold text-primary transition hover:bg-primary hover:text-white"
-          >
-            {c.gifts.detailsLabel}
-          </a>
-        </div>
-      </section>
+      <GiftsSection content={c.gifts} />
 
       <section id="rsvp" className="scroll-mt-20 py-16 md:py-24">
         <div className="mx-auto max-w-6xl px-4 md:px-6">

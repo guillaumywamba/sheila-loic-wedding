@@ -4,6 +4,7 @@ import {
   addRsvpSubmission,
   getRsvpSubmissions,
 } from "@/lib/content-storage";
+import { normalizePhone, rsvpAlreadyExists } from "@/lib/rsvp-utils";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as {
@@ -15,20 +16,38 @@ export async function POST(request: Request) {
   };
 
   const fullName = body.fullName?.trim();
-  const email = body.email?.trim();
+  const phone = body.phone?.trim();
   const attendance = body.attendance;
 
-  if (!fullName || !email || !attendance) {
+  if (!fullName || !phone || !attendance) {
     return NextResponse.json(
       { error: "Champs obligatoires manquants" },
       { status: 400 },
     );
   }
 
+  if (normalizePhone(phone).length < 6) {
+    return NextResponse.json(
+      { error: "Numéro de téléphone invalide" },
+      { status: 400 },
+    );
+  }
+
+  const existing = await getRsvpSubmissions();
+  if (rsvpAlreadyExists(existing, fullName, phone)) {
+    return NextResponse.json(
+      {
+        error:
+          "Une réponse existe déjà avec ce nom et ce numéro de téléphone.",
+      },
+      { status: 409 },
+    );
+  }
+
   const entry = await addRsvpSubmission({
     fullName,
-    email,
-    phone: body.phone?.trim(),
+    phone,
+    email: body.email?.trim() || undefined,
     attendance,
     message: body.message?.trim(),
   });

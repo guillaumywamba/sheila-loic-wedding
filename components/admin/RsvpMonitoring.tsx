@@ -94,12 +94,11 @@ export function RsvpMonitoring({ rsvps, loading, onRefresh }: Props) {
 
       <div className="overflow-hidden rounded-xl bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[720px] text-left text-sm">
+          <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="bg-primary/10 text-xs uppercase text-primary">
               <tr>
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3">Nom</th>
-                <th className="px-4 py-3">Email</th>
                 <th className="px-4 py-3">Téléphone</th>
                 <th className="px-4 py-3">Présence</th>
                 <th className="px-4 py-3">Message</th>
@@ -108,7 +107,7 @@ export function RsvpMonitoring({ rsvps, loading, onRefresh }: Props) {
             <tbody>
               {rsvps.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-muted">
+                  <td colSpan={5} className="px-4 py-8 text-center text-muted">
                     Aucune réponse pour le moment.
                   </td>
                 </tr>
@@ -119,8 +118,7 @@ export function RsvpMonitoring({ rsvps, loading, onRefresh }: Props) {
                       {new Date(r.createdAt).toLocaleString("fr-FR")}
                     </td>
                     <td className="px-4 py-3">{r.fullName}</td>
-                    <td className="px-4 py-3">{r.email}</td>
-                    <td className="px-4 py-3">{r.phone ?? "—"}</td>
+                    <td className="px-4 py-3">{r.phone}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${

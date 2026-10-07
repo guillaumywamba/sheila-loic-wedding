@@ -4,6 +4,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import type { RsvpSubmission, SiteContent } from "@/types/site";
 import { defaultSiteContent } from "@/lib/default-content";
+import { mergeSiteContent } from "@/lib/merge-site-content";
 import {
   readGitHubJson,
   useGitHubStorage,
@@ -70,13 +71,13 @@ async function blobWriteJson(pathname: string, data: unknown): Promise<void> {
 export async function getSiteContent(): Promise<SiteContent> {
   if (useGitHubStorage()) {
     const stored = await readGitHubJson<SiteContent>(GITHUB_CONTENT_PATH);
-    if (stored) return stored;
+    if (stored) return mergeSiteContent(stored);
   }
 
   const redis = redisClient();
   if (redis) {
     const stored = await redis.get<SiteContent>(CONTENT_REDIS_KEY);
-    if (stored) return stored;
+    if (stored) return mergeSiteContent(stored);
     await redis.set(CONTENT_REDIS_KEY, defaultSiteContent);
     return defaultSiteContent;
   }
@@ -85,7 +86,7 @@ export async function getSiteContent(): Promise<SiteContent> {
     try {
       const meta = await head(CONTENT_BLOB, blobTokenOption());
       const res = await fetch(meta.url);
-      if (res.ok) return (await res.json()) as SiteContent;
+      if (res.ok) return mergeSiteContent((await res.json()) as SiteContent);
     } catch {
       /* initialiser le blob */
     }
@@ -95,7 +96,7 @@ export async function getSiteContent(): Promise<SiteContent> {
 
   try {
     const raw = await fs.readFile(contentPath, "utf-8");
-    return JSON.parse(raw) as SiteContent;
+    return mergeSiteContent(JSON.parse(raw) as SiteContent);
   } catch {
     return defaultSiteContent;
   }

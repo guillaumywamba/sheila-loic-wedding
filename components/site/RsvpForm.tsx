@@ -26,8 +26,7 @@ export function RsvpForm({ content }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fullName: data.get("fullName"),
-        email: data.get("email"),
-        phone: data.get("phone") || undefined,
+        phone: data.get("phone"),
         attendance: attendance === "present" ? "present" : "absent",
         message: data.get("message") || undefined,
       }),
@@ -35,7 +34,13 @@ export function RsvpForm({ content }: Props) {
 
     if (!res.ok) {
       setStatus("error");
-      setError("Une erreur est survenue. Veuillez réessayer.");
+      const payload = (await res.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      setError(
+        payload?.error ??
+          "Une erreur est survenue. Veuillez réessayer.",
+      );
       return;
     }
 
@@ -77,25 +82,15 @@ export function RsvpForm({ content }: Props) {
         />
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium" htmlFor="email">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          placeholder="votre@email.com"
-          className="w-full rounded-lg border border-black/15 px-4 py-2.5 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-        />
-      </div>
-      <div>
         <label className="mb-1 block text-sm font-medium" htmlFor="phone">
           Téléphone
         </label>
         <input
           id="phone"
           name="phone"
+          type="tel"
+          required
+          autoComplete="tel"
           placeholder="+237 6XX XXX XXX"
           className="w-full rounded-lg border border-black/15 px-4 py-2.5 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />

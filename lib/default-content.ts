@@ -96,19 +96,6 @@ export const defaultSiteContent: SiteContent = {
     subtitle: "Sur la page informations logistiques",
     items: [
       {
-        id: "civil",
-        title: "Mariage Civil",
-        date: "Vendredi 02 Avril 2027",
-        startTime: "10h00",
-        location: "Bonadjo - Mairie Dla 1er",
-        image:
-          "https://images.fillout.com/472067/mde81vgch5/generated-images/oM8noBuq9qDF4H47zo2eAs/img_I50yFLmBJ4vQQsGE.jpg",
-        imageAlt: "Mariage Civil",
-        logisticsTitle: "Détails Logistique",
-        logisticsDetails:
-          "Chers invités, Nous avons le plaisir de vous convier à notre mariage civil qui se tiendra le Vendredi 02 Avril à 10 heures à la mairie de Dla 1er. Nous vous prions d'arriver au plus tard 30 minutes avant le début de la cérémonie. Tenue souhaitée : élégante (couleurs : Bientôt disponible ...). Après la cérémonie, nous aurons le plaisir de vous recevoir au domicile familial des parents de Sheila à Bonaberi Derrière FOKOU partir de 14 heures. Nous avons hâte de partager ce moment avec vous.",
-      },
-      {
         id: "traditionnel",
         title: "Mariage Traditionnel",
         date: "Vendredi 02 Avril 2027",
@@ -119,7 +106,7 @@ export const defaultSiteContent: SiteContent = {
         imageAlt: "Mariage Traditionnel",
         logisticsTitle: "Détails Logistique",
         logisticsDetails:
-          "Chers invités, À la suite de notre mariage civil, nous avons le plaisir de vous convier à notre mariage traditionnel qui se tiendra le Vendredi 02 Avril 2027 à 14h00 au domicile familial des parents de Sheila, à Bonabéri derrière FOKOU, Douala. Tenue : traditionnelle ou élégante (couleurs bientôt disponibles). Nous avons hâte de partager avec vous ce moment de joie, de tradition et de célébration. Sheila & Loïc",
+          "Chers invités, nous avons le plaisir de vous convier à notre mariage traditionnel qui se tiendra le Vendredi 02 Avril 2027 à 15h00 au domicile familial des parents de Sheila, à Bonabéri derrière FOKOU, Douala. Tenue : traditionnelle ou élégante (voir palette de couleurs ci-dessous). Nous avons hâte de partager avec vous ce moment de joie, de tradition et de célébration. Sheila & Loïc",
       },
       {
         id: "religieux",
@@ -152,14 +139,21 @@ export const defaultSiteContent: SiteContent = {
     weddingDates: "Dates de Mariage : Du 02 au 03 Avril 2027",
     venuesTitle: "Lieux de Mariage",
     venuesLines: [
-      "Vendredi 02 Avril, Mariage Civil : Mairie de Douala 1er (de 10h a 11h),",
-      "Dot : Bonaberi Ancienne Route a partir de 15h Jusqu'à 20h,",
-      "Samedi 03 Avril : Eglise EEC Douala (a definir) a 14h,",
-      "Soirée a partir de 19h",
+      "Vendredi 02 Avril — Dot traditionnelle : Bonabéri derrière FOKOU, à partir de 15h jusqu'à 20h,",
+      "Samedi 03 Avril — Église EEC Douala (à définir) à 14h,",
+      "Soirée à partir de 19h — SAPHIR GROUP EVENT, Makepe petit Pays",
     ],
     dressCodeTitle: "Dress Code",
     dressCode:
-      "Tissu pagne pour la mairie et la dote, Chic et glamour sur les couleurs Verte et Rose Pale pour la soirée.",
+      "Tissu pagne pour la dot, chic et glamour pour la soirée en s’inspirant de la palette de couleurs ci-dessous (verts et rose poudré).",
+    colorPaletteTitle: "Palette de couleurs",
+    colorPalette: [
+      { hex: "#123524", label: "Vert forêt" },
+      { hex: "#00674F", label: "Vert émeraude" },
+      { hex: "#C17B63", label: "Rose poudré" },
+      { hex: "#F2DCC4", label: "Pêche clair" },
+      { hex: "#FFFFFF", label: "Blanc" },
+    ],
     accommodationTitle: "Hébergement des invités",
     accommodationSubtitle:
       "Recommandations d'Hotels/Logements meublés à proximité",
@@ -270,23 +264,47 @@ export const defaultSiteContent: SiteContent = {
   },
   gifts: {
     title: "Services & Cadeaux",
-    message: "Bientôt disponible...",
-    images: [
+    message:
+      "Votre présence est notre plus beau cadeau. Si vous souhaitez nous faire un geste, voici les moyens qui nous conviennent le mieux.",
+    noPhysicalGiftsNote:
+      "Sheila et Loïc préfèrent ne pas recevoir de cadeaux physiques : la célébration se déroule au Cameroun alors qu’ils vivent en Europe, et le retour avec des bagages supplémentaires est limité par les quotas de poids autorisés en avion. Un don via les options ci-dessous nous touchera tout autant — merci pour votre compréhension et votre générosité.",
+    paymentMethods: [
       {
-        url: "https://images.fillout.com/472067/mde81vgch5/generated-images/jPe4VbdskKq6bKfFkoB2PS/img_mWcVDgR6M33p9Q7D.jpg",
-        alt: "Cadeaux 1",
+        id: "paypal",
+        title: "PayPal",
+        details: "Scannez le QR code ou utilisez le lien PayPal ci-dessous.",
+        qrCodeUrl: "",
+        linkUrl: "",
       },
       {
-        url: "https://images.fillout.com/472067/mde81vgch5/generated-images/oM8noBuq9qDF4H47zo2eAs/img_I50yFLmBJ4vQQsGE.jpg",
-        alt: "Cadeaux 2",
+        id: "wero",
+        title: "Wero",
+        details: "",
+        qrCodeUrl: "",
+        linkUrl: "",
       },
       {
-        url: "https://images.fillout.com/472067/mde81vgch5/generated-images/2wAPJpxtw4TWb8oYJhjVJA/img_ENPXUc7H3Vvw5Jse.jpg",
-        alt: "Cadeaux 3",
+        id: "rib",
+        title: "RIB / Virement bancaire",
+        details: "IBAN : …\nBIC : …\nTitulaire : Sheila & Loïc",
+        qrCodeUrl: "",
+        linkUrl: "",
+      },
+      {
+        id: "orange-money",
+        title: "Orange Money Cameroun",
+        details: "Numéro : …\nNom : …",
+        qrCodeUrl: "",
+        linkUrl: "",
+      },
+      {
+        id: "mtn-money",
+        title: "MTN Mobile Money Cameroun",
+        details: "Numéro : …\nNom : …",
+        qrCodeUrl: "",
+        linkUrl: "",
       },
     ],
-    detailsLabel: "Plus de détails",
-    detailsHref: "#contact",
   },
   rsvp: {
     title: "RSVP",
