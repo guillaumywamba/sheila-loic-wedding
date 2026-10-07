@@ -32,7 +32,11 @@ export function NavIcon({ id, className = "h-6 w-6" }: { id: string; className?:
     case "histoire":
       return (
         <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} {...props}>
-          <path d="M12 20s-6.5-4.2-6.5-9.5A6.5 6.5 0 0 1 12 4a6.5 6.5 0 0 1 6.5 6.5C18.5 15.8 12 20 12 20Z" />
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7 7-7Z"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       );
     case "galerie":
@@ -53,7 +57,11 @@ export function NavIcon({ id, className = "h-6 w-6" }: { id: string; className?:
     case "contact":
       return (
         <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.75} {...props}>
-          <path d="M6.5 5.5 9 3.5a2 2 0 0 1 2.2-.3l1.8 1a2 2 0 0 0 2.2 0l1.2-.7a2 2 0 0 1 2.7.9l1.1 2.2a11 11 0 0 1-5.2 7.4 11 11 0 0 1-7.4 2.2l-1.1-2.2a2 2 0 0 1 .8-2.6l1.2-.7a2 2 0 0 0 .9-2.2l-.3-1.8a2 2 0 0 1 1.1-1.9Z" />
+          <path
+            d="M5.5 4h2.2c.4 0 .8.2 1 .6l1.2 2.2a1 1 0 0 1-.2 1.1l-1.3 1.3a12 12 0 0 0 5.1 5.1l1.3-1.3a1 1 0 0 1 1.1-.2l2.2 1.2c.4.2.6.6.6 1V18a1.5 1.5 0 0 1-1.5 1.5C9.8 19.5 4.5 14.2 4.5 7A1.5 1.5 0 0 1 5.5 4Z"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       );
     default:
