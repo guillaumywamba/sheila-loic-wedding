@@ -45,4 +45,6 @@ next-env.d.ts
 !/data/site-content.json
 !/data/rsvps.json
 
+/public/uploads/
+
 .vercel

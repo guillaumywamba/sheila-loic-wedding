@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "images.fillout.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "**.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
     ],
   },
 };

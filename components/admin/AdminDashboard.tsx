@@ -1,5 +1,7 @@
 "use client";
 
+import { GalleryManager } from "@/components/admin/GalleryManager";
+import { RsvpMonitoring } from "@/components/admin/RsvpMonitoring";
 import { defaultSiteContent } from "@/lib/default-content";
 import type { RsvpSubmission, SiteContent } from "@/types/site";
 import { useCallback, useEffect, useState } from "react";
@@ -15,7 +17,7 @@ const TABS = [
   { id: "gifts", label: "Cadeaux" },
   { id: "rsvp", label: "RSVP" },
   { id: "contact", label: "Contact" },
-  { id: "submissions", label: "Réponses RSVP" },
+  { id: "submissions", label: "Monitoring RSVP" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -62,6 +64,7 @@ export function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [rsvps, setRsvps] = useState<RsvpSubmission[]>([]);
+  const [rsvpLoading, setRsvpLoading] = useState(false);
   const [storageOk, setStorageOk] = useState<boolean | null>(null);
 
   const load = useCallback(async () => {
@@ -77,29 +80,48 @@ export function AdminDashboard() {
       .catch(() => setStorageOk(false));
   }, [load]);
 
+  const loadRsvps = useCallback(async () => {
+    setRsvpLoading(true);
+    try {
+      const res = await fetch("/api/rsvp");
+      const data = (await res.json()) as RsvpSubmission[] | { error?: string };
+      setRsvps(Array.isArray(data) ? data : []);
+    } finally {
+      setRsvpLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (tab !== "submissions") return;
-    void fetch("/api/rsvp")
-      .then((r) => r.json())
-      .then((data) => setRsvps(Array.isArray(data) ? data : []));
-  }, [tab]);
+    void loadRsvps();
+  }, [tab, loadRsvps]);
+
+  async function persistContent(next: SiteContent) {
+    const res = await fetch("/api/content", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(next),
+    });
+    if (!res.ok) {
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      throw new Error(data.error ?? "Erreur lors de l'enregistrement.");
+    }
+  }
 
   async function save() {
     if (!content) return;
     setSaving(true);
     setMessage("");
-    const res = await fetch("/api/content", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(content),
-    });
-    setSaving(false);
-    if (res.ok) {
+    try {
+      await persistContent(content);
       setMessage("Enregistré avec succès.");
-      return;
+    } catch (err) {
+      setMessage(
+        err instanceof Error ? err.message : "Erreur lors de l'enregistrement.",
+      );
+    } finally {
+      setSaving(false);
     }
-    const data = (await res.json().catch(() => ({}))) as { error?: string };
-    setMessage(data.error ?? "Erreur lors de l'enregistrement.");
   }
 
   async function logout() {
@@ -481,45 +503,24 @@ export function AdminDashboard() {
           <div className="space-y-4 rounded-xl bg-white p-6 shadow-sm">
             <Field label="Titre" value={c.gallery.title} onChange={(v) => setContent({ ...c, gallery: { ...c.gallery, title: v } })} />
             <Field label="Sous-titre" value={c.gallery.subtitle} onChange={(v) => setContent({ ...c, gallery: { ...c.gallery, subtitle: v } })} />
-            <button
-              type="button"
-              className="text-sm text-primary underline"
-              onClick={() =>
-                setContent({
-                  ...c,
-                  gallery: {
-                    ...c.gallery,
-                    photos: [...c.gallery.photos, { url: "", alt: "Photo" }],
-                  },
-                })
-              }
-            >
-              + Ajouter une photo
-            </button>
-            {c.gallery.photos.map((photo, i) => (
-              <div key={i} className="grid gap-2 border-t pt-4 sm:grid-cols-[1fr_1fr_auto]">
-                <Field label={`URL photo ${i + 1}`} value={photo.url} onChange={(v) => {
-                  const photos = [...c.gallery.photos];
-                  photos[i] = { ...photos[i], url: v };
-                  setContent({ ...c, gallery: { ...c.gallery, photos } });
-                }} />
-                <Field label="Alt" value={photo.alt} onChange={(v) => {
-                  const photos = [...c.gallery.photos];
-                  photos[i] = { ...photos[i], alt: v };
-                  setContent({ ...c, gallery: { ...c.gallery, photos } });
-                }} />
-                <button
-                  type="button"
-                  className="self-end text-sm text-red-600"
-                  onClick={() => {
-                    const photos = c.gallery.photos.filter((_, j) => j !== i);
-                    setContent({ ...c, gallery: { ...c.gallery, photos } });
-                  }}
-                >
-                  Supprimer
-                </button>
-              </div>
-            ))}
+            <GalleryManager
+              gallery={c.gallery}
+              onChange={(gallery) => setContent({ ...c, gallery })}
+              onUploaded={async (gallery) => {
+                const next = { ...c, gallery };
+                setContent(next);
+                try {
+                  await persistContent(next);
+                  setMessage("Galerie mise à jour.");
+                } catch (err) {
+                  setMessage(
+                    err instanceof Error
+                      ? err.message
+                      : "Photo ajoutée localement — enregistrement global échoué.",
+                  );
+                }
+              }}
+            />
           </div>
         )}
 
@@ -557,44 +558,11 @@ export function AdminDashboard() {
         )}
 
         {tab === "submissions" && (
-          <div className="overflow-hidden rounded-xl bg-white shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[640px] text-left text-sm">
-                <thead className="bg-primary/10 text-xs uppercase text-primary">
-                  <tr>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Nom</th>
-                    <th className="px-4 py-3">Email</th>
-                    <th className="px-4 py-3">Présence</th>
-                    <th className="px-4 py-3">Message</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rsvps.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="px-4 py-8 text-center text-muted">
-                        Aucune réponse pour le moment.
-                      </td>
-                    </tr>
-                  ) : (
-                    rsvps.map((r) => (
-                      <tr key={r.id} className="border-t border-black/5">
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          {new Date(r.createdAt).toLocaleString("fr-FR")}
-                        </td>
-                        <td className="px-4 py-3">{r.fullName}</td>
-                        <td className="px-4 py-3">{r.email}</td>
-                        <td className="px-4 py-3">
-                          {r.attendance === "present" ? "Présent(e)" : "Absent(e)"}
-                        </td>
-                        <td className="max-w-xs truncate px-4 py-3">{r.message ?? "—"}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <RsvpMonitoring
+            rsvps={rsvps}
+            loading={rsvpLoading}
+            onRefresh={() => void loadRsvps()}
+          />
         )}
       </main>
     </div>
