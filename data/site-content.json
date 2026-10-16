@@ -58,7 +58,7 @@
   "welcome": {
     "title": "Bienvenue à tous,",
     "paragraphs": [
-      "Nous sommes très heureux de vous accueillir sur notre site de mariage. Ce jour si spécial ne serait pas le même sans vous.",
+      "Nous sommes très heureux de vous accueillir sur notre site de mariage. Ce jour ci spécial ne serait pas le même sans vous.",
       "Votre présence, votre affection et votre soutien comptent énormément pour nous, et nous avons hâte de partager avec vous ces moments uniques remplis d'amour, de joie et d'émotions.",
       "À travers ce site, vous trouverez toutes les informations utiles concernant le déroulement de la journée, le lieu, le programme et les petits détails qui rendront cette célébration encore plus belle.",
       "Merci de faire partie de notre histoire. Nous avons hâte de célébrer ce magnifique chapitre de notre vie à vos côtés."
@@ -74,7 +74,7 @@
         "alt": "Sheila & Loïc 2"
       },
       {
-        "url": "https://images.fillout.com/orgid-472067/flowpublicid-mde81vgch5/widgetid-default/f3iAbQ78fm9UuvpUhqHpFR/pasted-image-1783865601515-rey0u1jw.jpg",
+        "url": "https://xnjkqne9jtagvgnv.public.blob.vercel-storage.com/welcome/1792180386077-IMG_3237.jpeg",
         "alt": "Sheila & Loïc 3"
       },
       {
@@ -87,17 +87,6 @@
     "title": "Aperçu des Événements",
     "subtitle": "Sur la page informations logistiques",
     "items": [
-      {
-        "id": "civil",
-        "title": "",
-        "date": "",
-        "startTime": "",
-        "location": "",
-        "image": "",
-        "imageAlt": "Mariage Civil",
-        "logisticsTitle": "Détails Logistique",
-        "logisticsDetails": ""
-      },
       {
         "id": "traditionnel",
         "title": "Mariage Traditionnel",
@@ -145,6 +134,29 @@
     ],
     "dressCodeTitle": "Dress Code",
     "dressCode": "Tissu pagne pour la mairie et la dote, Chic et glamour sur les couleurs Verte et Rose Pale pour la soirée.",
+    "colorPaletteTitle": "Palette de couleurs",
+    "colorPalette": [
+      {
+        "hex": "#123524",
+        "label": "Vert forêt"
+      },
+      {
+        "hex": "#00674F",
+        "label": "Vert émeraude"
+      },
+      {
+        "hex": "#C17B63",
+        "label": "Rose poudré"
+      },
+      {
+        "hex": "#F2DCC4",
+        "label": "Pêche clair"
+      },
+      {
+        "hex": "#FFFFFF",
+        "label": "Blanc"
+      }
+    ],
     "accommodationTitle": "Hébergement des invités",
     "accommodationSubtitle": "Recommandations d'Hotels/Logements meublés à proximité",
     "coupleImage": "https://images.fillout.com/orgid-472067/flowpublicid-mde81vgch5/widgetid-default/dHtkUHgAkfa9XH6iyRUKgG/pasted-image-1784204886671-3itw1zoc.jpg",
@@ -366,6 +378,44 @@
   "gifts": {
     "title": "Services & Cadeaux",
     "message": "Bientôt disponible...",
+    "noPhysicalGiftsNote": "Sheila et Loïc préfèrent ne pas recevoir de cadeaux physiques : la célébration se déroule au Cameroun alors qu’ils vivent en Europe, et le retour avec des bagages supplémentaires est limité par les quotas de poids autorisés en avion. Un don via les options ci-dessous nous touchera tout autant — merci pour votre compréhension et votre générosité.",
+    "paymentMethods": [
+      {
+        "id": "paypal",
+        "title": "PayPal",
+        "details": "Scannez le QR code ou utilisez le lien PayPal ci-dessous.",
+        "qrCodeUrl": "",
+        "linkUrl": ""
+      },
+      {
+        "id": "wero",
+        "title": "Wero",
+        "details": "",
+        "qrCodeUrl": "",
+        "linkUrl": ""
+      },
+      {
+        "id": "rib",
+        "title": "RIB / Virement bancaire",
+        "details": "IBAN : …\nBIC : …\nTitulaire : Sheila & Loïc",
+        "qrCodeUrl": "",
+        "linkUrl": ""
+      },
+      {
+        "id": "orange-money",
+        "title": "Orange Money Cameroun",
+        "details": "Numéro : …\nNom : …",
+        "qrCodeUrl": "",
+        "linkUrl": ""
+      },
+      {
+        "id": "mtn-money",
+        "title": "MTN Mobile Money Cameroun",
+        "details": "Numéro : …\nNom : …",
+        "qrCodeUrl": "",
+        "linkUrl": ""
+      }
+    ],
     "images": [
       {
         "url": "https://images.fillout.com/472067/mde81vgch5/generated-images/jPe4VbdskKq6bKfFkoB2PS/img_mWcVDgR6M33p9Q7D.jpg",
