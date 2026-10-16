@@ -124,13 +124,13 @@
   },
   "logistics": {
     "title": "Informations logistiques",
-    "weddingDates": "Dates de Mariage : Du 02 au 03 Avril 2027",
+    "weddingDates": "",
     "venuesTitle": "Lieux de Mariage",
     "venuesLines": [
-      "Vendredi 02 Avril, Mariage Civil : Mairie de Douala 1er (de 10h a 11h),",
-      "Dot : Bonaberi Ancienne Route a partir de 15h Jusqu'à 20h,",
-      "Samedi 03 Avril : Eglise EEC Douala (a definir) a 14h,",
-      "Soirée a partir de 19h"
+      "",
+      "",
+      "",
+      ""
     ],
     "dressCodeTitle": "Dress Code",
     "dressCode": "Tissu pagne pour la mairie et la dote, Chic et glamour sur les couleurs Verte et Rose Pale pour la soirée.",
