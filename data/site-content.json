@@ -85,7 +85,7 @@
   },
   "events": {
     "title": "Aperçu des Événements",
-    "subtitle": "Sur la page informations logistiques",
+    "subtitle": "",
     "items": [
       {
         "id": "traditionnel",
