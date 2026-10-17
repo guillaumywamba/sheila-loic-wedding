@@ -51,7 +51,12 @@ export function GiftsSection({ content }: Props) {
                   Coordonnées à venir — modifiables dans l’administration.
                 </p>
               )}
-              {method.linkUrl ? (
+              {method.id === "paypal" && method.email ? (
+                <p className="mt-4 text-center text-sm font-semibold text-foreground">
+                  {method.email}
+                </p>
+              ) : null}
+              {method.id !== "paypal" && method.linkUrl ? (
                 <a
                   href={method.linkUrl}
                   target="_blank"

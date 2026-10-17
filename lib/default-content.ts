@@ -113,15 +113,14 @@ export const defaultSiteContent: SiteContent = {
         title: "Mariage Religieux",
         date: "Samedi 03 Avril 2027",
         startTime: "14h00",
-        location: "Église EEC Douala",
+        location: "Église EEC — 185 Rue Alfred Saker, Douala",
         image:
           "https://images.fillout.com/472067/mde81vgch5/generated-images/whuZuxYN1x6C6ijjSoSUjv/img_Os5QqzcsGfHNWmVF.jpg",
         imageAlt: "Mariage Religieux",
         logisticsTitle: "Détail Logistique",
         logisticsDetails:
-          "Chers invités, nous vous convions à la cérémonie religieuse. Merci d’arriver au moins 30 minutes avant le début.",
-        mapsUrl:
-          "https://www.google.com/maps/search/?api=1&query=Eglise+EEC+Douala",
+          "Chers invités, nous vous convions à la cérémonie religieuse à l’Église Évangélique du Cameroun (EEC), 185 Rue Alfred Saker, Douala. Merci d’arriver au moins 30 minutes avant le début.",
+        mapsUrl: "https://maps.app.goo.gl/sibDdk7VkNHnfY6T9?g_st=iwb",
       },
       {
         id: "soiree",
@@ -281,9 +280,10 @@ export const defaultSiteContent: SiteContent = {
       {
         id: "paypal",
         title: "PayPal",
-        details: "Scannez le QR code ou utilisez le lien PayPal ci-dessous.",
+        details: "Scannez le QR code ou envoyez un paiement à l’adresse PayPal ci-dessous.",
         qrCodeUrl: "",
         linkUrl: "",
+        email: "",
       },
       {
         id: "wero",

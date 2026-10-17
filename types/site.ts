@@ -99,6 +99,7 @@ export type GiftPaymentMethod = {
   details: string;
   qrCodeUrl?: string;
   linkUrl?: string;
+  email?: string;
 };
 
 export type GiftsContent = {

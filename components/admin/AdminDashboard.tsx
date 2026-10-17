@@ -662,15 +662,31 @@ export function AdminDashboard() {
                     setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
                   }}
                 />
-                <Field
-                  label="Lien externe (optionnel)"
-                  value={method.linkUrl ?? ""}
-                  onChange={(v) => {
-                    const paymentMethods = [...c.gifts.paymentMethods];
-                    paymentMethods[mi] = { ...paymentMethods[mi], linkUrl: v };
-                    setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
-                  }}
-                />
+                {method.id === "paypal" ? (
+                  <Field
+                    label="Adresse e-mail PayPal"
+                    value={method.email ?? ""}
+                    onChange={(v) => {
+                      const paymentMethods = [...c.gifts.paymentMethods];
+                      paymentMethods[mi] = {
+                        ...paymentMethods[mi],
+                        email: v,
+                        linkUrl: "",
+                      };
+                      setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
+                    }}
+                  />
+                ) : (
+                  <Field
+                    label="Lien externe (optionnel)"
+                    value={method.linkUrl ?? ""}
+                    onChange={(v) => {
+                      const paymentMethods = [...c.gifts.paymentMethods];
+                      paymentMethods[mi] = { ...paymentMethods[mi], linkUrl: v };
+                      setContent({ ...c, gifts: { ...c.gifts, paymentMethods } });
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>

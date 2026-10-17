@@ -21,10 +21,18 @@ export function mergeSiteContent(stored: SiteContent): SiteContent {
       .filter((item) => item.id !== "civil")
       .map((item) => {
         const def = d.events.items.find((e) => e.id === item.id);
+        const storedMap = item.mapsUrl?.trim();
+        const mapsUrl =
+          item.id === "religieux" &&
+          def?.mapsUrl &&
+          (!storedMap || storedMap.includes("google.com/maps/search"))
+            ? def.mapsUrl
+            : storedMap || def?.mapsUrl;
+
         return {
           ...item,
           logisticsTitle: normalizeLogisticsTitle(item.logisticsTitle),
-          mapsUrl: item.mapsUrl?.trim() || def?.mapsUrl,
+          mapsUrl,
         };
       }),
   };
