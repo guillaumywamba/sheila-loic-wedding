@@ -4,6 +4,7 @@ import { AccommodationSection } from "./AccommodationSection";
 import { Countdown } from "./Countdown";
 import { EventsSection } from "./EventsSection";
 import { ImageCarousel } from "./ImageCarousel";
+import { ColorPaletteStrip } from "./ColorPaletteStrip";
 import { GiftsSection } from "./GiftsSection";
 import { RsvpForm } from "./RsvpForm";
 import { SiteNavigation } from "./SiteNavigation";
@@ -107,17 +108,29 @@ export function WeddingSite({ content }: Props) {
             </h3>
             <p className="site-justify mt-4 text-center">{c.logistics.dressCode}</p>
             {c.logistics.dressCodeImage ? (
-              <div className="relative mx-auto mt-8 flex max-w-md items-center justify-center overflow-hidden rounded-2xl bg-neutral-100 shadow-inner">
-                <Image
-                  src={c.logistics.dressCodeImage}
-                  alt={c.logistics.dressCodeImageAlt}
-                  width={800}
-                  height={1200}
-                  className="h-auto w-full object-contain object-center"
-                  sizes="(max-width: 768px) 90vw, 448px"
-                />
-              </div>
+              <figure className="mx-auto mt-8 max-w-md">
+                <div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-neutral-100 shadow-inner">
+                  <Image
+                    src={c.logistics.dressCodeImage}
+                    alt={c.logistics.dressCodeImageAlt || c.logistics.dressCodeTitle}
+                    width={800}
+                    height={1200}
+                    className="h-auto w-full object-contain object-center"
+                    sizes="(max-width: 768px) 90vw, 448px"
+                  />
+                </div>
+                {c.logistics.dressCodeImageAlt?.trim() ? (
+                  <figcaption className="site-justify mt-4 text-center text-sm leading-relaxed text-muted md:text-base">
+                    {c.logistics.dressCodeImageAlt}
+                  </figcaption>
+                ) : null}
+              </figure>
             ) : null}
+            <ColorPaletteStrip
+              title={c.logistics.colorPaletteTitle}
+              swatches={c.logistics.colorPalette}
+              centered
+            />
           </div>
 
           <div className="mt-12">

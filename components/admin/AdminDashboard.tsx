@@ -489,7 +489,7 @@ export function AdminDashboard() {
               }
             />
             <Field
-              label="Texte alternatif photo dress code"
+              label="Légende sous la photo (visible par les invités)"
               value={c.logistics.dressCodeImageAlt ?? ""}
               onChange={(v) =>
                 setContent({ ...c, logistics: { ...c.logistics, dressCodeImageAlt: v } })
