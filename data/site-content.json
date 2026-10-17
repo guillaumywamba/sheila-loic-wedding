@@ -95,7 +95,7 @@
         "location": "Bonaberi Derrière Fokou",
         "image": "https://images.fillout.com/orgid-472067/flowpublicid-mde81vgch5/widgetid-default/kTVsveHecSS27WkQHEVZty/pasted-image-1783869639006-66552grx.png",
         "imageAlt": "Mariage Traditionnel",
-        "logisticsTitle": "Détails Logistique",
+        "logisticsTitle": "Détail Logistique",
         "logisticsDetails": "Chers invités, nous avons le plaisir de vous convier à notre mariage traditionnel qui se tiendra le Vendredi 02 Avril 2027 à 16h00 au domicile familial des parents de Sheila, à Bonabéri derrière FOKOU, Douala.\nTenue : traditionnelle ou élégante (couleurs bientôt disponibles)."
       },
       {
@@ -106,8 +106,9 @@
         "location": "Paroisse du cinquantenaire à Makepe",
         "image": "https://images.fillout.com/472067/mde81vgch5/generated-images/whuZuxYN1x6C6ijjSoSUjv/img_Os5QqzcsGfHNWmVF.jpg",
         "imageAlt": "Mariage Religieux",
-        "logisticsTitle": "Détails Logistique",
-        "logisticsDetails": "https://maps.app.goo.gl/DZNsBFdzeRTifWq96?g_st=ic"
+        "logisticsTitle": "Détail Logistique",
+        "logisticsDetails": "https://maps.app.goo.gl/DZNsBFdzeRTifWq96?g_st=ic",
+        "mapsUrl": "https://maps.app.goo.gl/sibDdk7VkNHnfY6T9?g_st=iwb"
       },
       {
         "id": "soiree",
@@ -117,8 +118,9 @@
         "location": "MANOU HÔTEL - BONAMOUSSADI",
         "image": "https://images.fillout.com/472067/mde81vgch5/generated-images/uVjYo8V2bEnd1fefx5WJRq/img_C2pk6UOubSsp3vN9.jpg",
         "imageAlt": "Soirée",
-        "logisticsTitle": "Détails Logistique",
-        "logisticsDetails": "https://maps.app.goo.gl/zDbxtiZ8BKbcNGdL9?g_st=ic"
+        "logisticsTitle": "Détail Logistique",
+        "logisticsDetails": "https://maps.app.goo.gl/zDbxtiZ8BKbcNGdL9?g_st=ic",
+        "mapsUrl": "https://maps.app.goo.gl/otR8fgii8aqqAiPx7?g_st=ic"
       }
     ]
   },
@@ -134,6 +136,8 @@
     ],
     "dressCodeTitle": "Dress Code",
     "dressCode": "Tissu pagne pour la dote.\nTenue Chic et glamour sur les couleurs Verte et Rose Pale pour la soirée.",
+    "dressCodeImage": "/images/dress-code-reference.png",
+    "dressCodeImageAlt": "Exemple de tenue — costume vert et robe rose poudré pour la soirée",
     "colorPaletteTitle": "Palette de couleurs",
     "colorPalette": [
       {
