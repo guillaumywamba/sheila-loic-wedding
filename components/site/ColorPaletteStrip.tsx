@@ -6,8 +6,15 @@ type Props = {
   centered?: boolean;
 };
 
+function withoutWhite(swatches: ColorSwatch[]): ColorSwatch[] {
+  return swatches.filter(
+    (s) => s.hex.replace(/\s/g, "").toUpperCase() !== "#FFFFFF",
+  );
+}
+
 export function ColorPaletteStrip({ title, swatches, centered }: Props) {
-  if (!swatches.length) return null;
+  const palette = withoutWhite(swatches);
+  if (!palette.length) return null;
 
   return (
     <div className="mt-8 border-t border-black/5 pt-8">
@@ -17,30 +24,24 @@ export function ColorPaletteStrip({ title, swatches, centered }: Props) {
         {title}
       </p>
       <ul
-        className={`mx-auto mt-5 grid max-w-md grid-cols-5 gap-3 px-1 sm:max-w-lg sm:gap-4 md:max-w-xl ${centered ? "" : ""}`}
+        className="mx-auto mt-5 grid max-w-sm grid-cols-4 gap-4 px-2 sm:max-w-md sm:gap-5 md:max-w-lg md:gap-6"
         aria-label={title}
       >
-        {swatches.map((swatch, index) => {
-          const isWhite = swatch.hex.replace(/\s/g, "").toUpperCase() === "#FFFFFF";
-          const label =
-            swatch.label?.trim() || (isWhite ? "Blanc" : "");
+        {palette.map((swatch, index) => {
+          const label = swatch.label?.trim() ?? "";
 
           return (
             <li
               key={swatch.hex + String(index)}
-              className="flex min-w-0 flex-col items-center gap-1.5 sm:gap-2"
+              className="flex min-w-0 flex-col items-center gap-2 sm:gap-2.5"
             >
               <span
-                className={`h-10 w-10 shrink-0 rounded-full shadow-md sm:h-12 sm:w-12 md:h-14 md:w-14 ${
-                  isWhite
-                    ? "border-2 border-black/15 ring-2 ring-black/10"
-                    : "border-2 border-white ring-1 ring-black/10"
-                }`}
+                className="h-12 w-12 shrink-0 rounded-full border-2 border-white shadow-md ring-1 ring-black/10 sm:h-14 sm:w-14 md:h-16 md:w-16"
                 style={{ backgroundColor: swatch.hex }}
                 title={label || swatch.hex}
               />
               {label ? (
-                <span className="w-full text-center text-[9px] leading-tight text-muted sm:text-[10px] md:text-xs">
+                <span className="w-full text-center text-[10px] leading-tight text-muted sm:text-xs md:text-sm">
                   {label}
                 </span>
               ) : null}

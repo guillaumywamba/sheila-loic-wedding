@@ -2,12 +2,19 @@ import { defaultSiteContent } from "@/lib/default-content";
 import { normalizeLogisticsTitle } from "@/lib/event-logistics-text";
 import type { ColorSwatch, GiftPaymentMethod, SiteContent } from "@/types/site";
 
+function isWhiteSwatch(swatch: ColorSwatch): boolean {
+  return swatch.hex.replace(/\s/g, "").toUpperCase() === "#FFFFFF";
+}
+
 function mergeColorPalette(
   stored: ColorSwatch[] | undefined,
   defaults: ColorSwatch[],
 ): ColorSwatch[] {
+  const cleaned =
+    stored?.filter((s) => !isWhiteSwatch(s)) ?? [];
+
   return defaults.map((def, index) => {
-    const fromStored = stored?.[index];
+    const fromStored = cleaned[index];
     if (!fromStored) return def;
     return {
       hex: fromStored.hex?.trim() || def.hex,

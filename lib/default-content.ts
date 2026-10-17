@@ -160,7 +160,6 @@ export const defaultSiteContent: SiteContent = {
       { hex: "#00674F", label: "Vert émeraude" },
       { hex: "#C17B63", label: "Rose poudré" },
       { hex: "#F2DCC4", label: "Pêche clair" },
-      { hex: "#FFFFFF", label: "Blanc" },
     ],
     accommodationTitle: "Hébergement des invités",
     accommodationSubtitle:
