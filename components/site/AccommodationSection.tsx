@@ -16,8 +16,10 @@ export function AccommodationSection({ title, subtitle, tiers }: Props) {
 
   return (
     <div className="mt-10">
-      <h3 className="font-display text-xl text-primary md:text-2xl">{title}</h3>
-      <p className="mt-1 text-sm text-muted">{subtitle}</p>
+      {title ? (
+        <h3 className="font-display text-xl text-primary md:text-2xl">{title}</h3>
+      ) : null}
+      {subtitle ? <p className="mt-1 text-sm text-muted">{subtitle}</p> : null}
 
       <div className="mt-6 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tiers.map((t, i) => (

@@ -199,7 +199,7 @@ export function GalleryManager({ gallery, onChange, onUploaded }: Props) {
               <img
                 src={photo.url}
                 alt={photo.alt}
-                className="aspect-square w-full object-cover"
+                className="aspect-square w-full bg-neutral-100 object-contain object-center"
               />
               <span
                 className={`absolute left-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs font-bold transition ${

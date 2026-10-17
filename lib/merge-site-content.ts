@@ -1,4 +1,5 @@
 import { defaultSiteContent } from "@/lib/default-content";
+import { normalizeLogisticsTitle } from "@/lib/event-logistics-text";
 import type { GiftPaymentMethod, SiteContent } from "@/types/site";
 
 function mergePaymentMethods(
@@ -16,12 +17,25 @@ export function mergeSiteContent(stored: SiteContent): SiteContent {
 
   const events = {
     ...stored.events,
-    items: stored.events.items.filter((item) => item.id !== "civil"),
+    items: stored.events.items
+      .filter((item) => item.id !== "civil")
+      .map((item) => {
+        const def = d.events.items.find((e) => e.id === item.id);
+        return {
+          ...item,
+          logisticsTitle: normalizeLogisticsTitle(item.logisticsTitle),
+          mapsUrl: item.mapsUrl?.trim() || def?.mapsUrl,
+        };
+      }),
   };
 
   const logistics = {
     ...d.logistics,
     ...stored.logistics,
+    dressCodeImage:
+      stored.logistics.dressCodeImage?.trim() || d.logistics.dressCodeImage,
+    dressCodeImageAlt:
+      stored.logistics.dressCodeImageAlt ?? d.logistics.dressCodeImageAlt,
     colorPalette:
       stored.logistics.colorPalette?.length > 0
         ? stored.logistics.colorPalette

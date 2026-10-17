@@ -50,7 +50,7 @@ export function ImagePickerField({
         <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-black/5">
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="" className="h-full w-full object-cover" />
+            <img src={value} alt="" className="h-full w-full object-contain object-center" />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-xs text-muted">
               Aucune

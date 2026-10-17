@@ -2,6 +2,10 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import {
+  normalizeLogisticsTitle,
+  splitLogisticsDetails,
+} from "@/lib/event-logistics-text";
 import type { EventItem } from "@/types/site";
 
 type Props = {
@@ -14,6 +18,9 @@ export function EventsSection({ title, subtitle, items }: Props) {
   const [active, setActive] = useState(0);
   const event = items[active];
   if (!event) return null;
+
+  const { body, mapUrls } = splitLogisticsDetails(event.logisticsDetails);
+  const mapHref = event.mapsUrl?.trim() || mapUrls[0];
 
   return (
     <section id="evenements" className="scroll-mt-20 bg-[#F9F9F9] py-16 md:py-24">
@@ -45,12 +52,13 @@ export function EventsSection({ title, subtitle, items }: Props) {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 md:items-start">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-md">
+          <div className="relative flex min-h-[240px] items-center justify-center overflow-hidden rounded-2xl bg-neutral-100 shadow-md md:min-h-[320px]">
             <Image
               src={event.image}
               alt={event.imageAlt}
-              fill
-              className="object-cover"
+              width={1200}
+              height={900}
+              className="h-auto max-h-[480px] w-full object-contain object-center"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
@@ -64,11 +72,21 @@ export function EventsSection({ title, subtitle, items }: Props) {
             </p>
             <p className="text-sm text-muted">Lieu : {event.location}</p>
             <h4 className="mt-6 font-display text-lg text-primary">
-              {event.logisticsTitle}
+              {normalizeLogisticsTitle(event.logisticsTitle)}
             </h4>
             <p className="site-justify mt-2 whitespace-pre-line text-foreground/90">
-              {event.logisticsDetails}
+              {body}
             </p>
+            {mapHref ? (
+              <a
+                href={mapHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-primary/90"
+              >
+                Voir sur Map
+              </a>
+            ) : null}
           </div>
         </div>
       </div>

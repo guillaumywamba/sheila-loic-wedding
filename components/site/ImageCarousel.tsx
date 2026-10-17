@@ -30,7 +30,7 @@ export function ImageCarousel({
           src={images[index].url}
           alt={images[index].alt}
           fill
-          className="object-cover"
+          className="object-contain object-center bg-neutral-100"
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>

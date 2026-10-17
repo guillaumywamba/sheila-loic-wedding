@@ -4,7 +4,6 @@ import { AccommodationSection } from "./AccommodationSection";
 import { Countdown } from "./Countdown";
 import { EventsSection } from "./EventsSection";
 import { ImageCarousel } from "./ImageCarousel";
-import { ColorPaletteStrip } from "./ColorPaletteStrip";
 import { GiftsSection } from "./GiftsSection";
 import { RsvpForm } from "./RsvpForm";
 import { SiteNavigation } from "./SiteNavigation";
@@ -98,54 +97,37 @@ export function WeddingSite({ content }: Props) {
             {c.logistics.weddingDates}
           </p>
 
-          <div className="mt-12 grid gap-10 md:grid-cols-2">
-            <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm">
-              <h3 className="font-display text-xl text-primary">
-                {c.logistics.venuesTitle}
-              </h3>
-              <ul className="site-justify-block mt-4 space-y-2 text-sm md:text-base">
-                {c.logistics.venuesLines.map((line) => (
-                  <li key={line} className="site-justify">
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-black/10 bg-white p-6 shadow-sm">
-              <h3 className="font-display text-xl text-primary">
-                {c.logistics.dressCodeTitle}
-              </h3>
-              <p className="site-justify mt-4">{c.logistics.dressCode}</p>
-              <ColorPaletteStrip
-                title={c.logistics.colorPaletteTitle}
-                swatches={c.logistics.colorPalette}
-              />
-            </div>
+          <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-black/10 bg-white p-6 shadow-sm md:p-8">
+            <h3 className="font-display text-center text-xl text-primary md:text-2xl">
+              {c.logistics.dressCodeTitle}
+            </h3>
+            <p className="site-justify mt-4 text-center">{c.logistics.dressCode}</p>
+            {c.logistics.dressCodeImage ? (
+              <div className="relative mx-auto mt-8 flex max-w-md items-center justify-center overflow-hidden rounded-2xl bg-neutral-100 shadow-inner">
+                <Image
+                  src={c.logistics.dressCodeImage}
+                  alt={c.logistics.dressCodeImageAlt}
+                  width={800}
+                  height={1200}
+                  className="h-auto w-full object-contain object-center"
+                  sizes="(max-width: 768px) 90vw, 448px"
+                />
+              </div>
+            ) : null}
           </div>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-2 md:items-center">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-md">
-              <Image
-                src={c.logistics.coupleImage}
-                alt={c.logistics.coupleImageAlt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div>
-              <h3 className="font-display text-2xl text-primary">
-                {c.logistics.accommodationTitle}
-              </h3>
-              <p className="site-justify mt-2 text-muted">
-                {c.logistics.accommodationSubtitle}
-              </p>
-              <AccommodationSection
-                title="Hébergements recommandés"
-                subtitle=""
-                tiers={c.logistics.tiers}
-              />
-            </div>
+          <div className="mt-12">
+            <h3 className="font-display text-center text-2xl text-primary">
+              {c.logistics.accommodationTitle}
+            </h3>
+            <p className="site-justify mx-auto mt-2 max-w-2xl text-center text-muted">
+              {c.logistics.accommodationSubtitle}
+            </p>
+            <AccommodationSection
+              title=""
+              subtitle=""
+              tiers={c.logistics.tiers}
+            />
           </div>
         </div>
       </section>
@@ -215,7 +197,7 @@ export function WeddingSite({ content }: Props) {
                 <img
                   src={photo.url}
                   alt={photo.alt}
-                  className="w-full object-cover"
+                  className="mx-auto w-full bg-neutral-100 object-contain object-center"
                   loading="lazy"
                 />
               </div>

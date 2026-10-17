@@ -447,11 +447,29 @@ export function AdminDashboard() {
                     setContent({ ...c, events: { ...c.events, items } });
                   }}
                 />
+                <Field
+                  label="Titre bloc logistique"
+                  value={ev.logisticsTitle}
+                  onChange={(v) => {
+                    const items = [...c.events.items];
+                    items[i] = { ...items[i], logisticsTitle: v };
+                    setContent({ ...c, events: { ...c.events, items } });
+                  }}
+                />
                 <Field label="Détails logistique" value={ev.logisticsDetails} multiline onChange={(v) => {
                   const items = [...c.events.items];
                   items[i] = { ...items[i], logisticsDetails: v };
                   setContent({ ...c, events: { ...c.events, items } });
                 }} />
+                <Field
+                  label="Lien Google Maps (bouton « Voir sur Map »)"
+                  value={ev.mapsUrl ?? ""}
+                  onChange={(v) => {
+                    const items = [...c.events.items];
+                    items[i] = { ...items[i], mapsUrl: v };
+                    setContent({ ...c, events: { ...c.events, items } });
+                  }}
+                />
               </div>
             ))}
           </div>
@@ -462,6 +480,21 @@ export function AdminDashboard() {
             <Field label="Titre" value={c.logistics.title} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, title: v } })} />
             <Field label="Dates mariage" value={c.logistics.weddingDates} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, weddingDates: v } })} />
             <Field label="Dress code" value={c.logistics.dressCode} multiline onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, dressCode: v } })} />
+            <ImagePickerField
+              label="Photo dress code (exemple tenue)"
+              value={c.logistics.dressCodeImage ?? ""}
+              folder="logistics"
+              onChange={(v) =>
+                setContent({ ...c, logistics: { ...c.logistics, dressCodeImage: v } })
+              }
+            />
+            <Field
+              label="Texte alternatif photo dress code"
+              value={c.logistics.dressCodeImageAlt ?? ""}
+              onChange={(v) =>
+                setContent({ ...c, logistics: { ...c.logistics, dressCodeImageAlt: v } })
+              }
+            />
             <Field label="Titre palette couleurs" value={c.logistics.colorPaletteTitle} onChange={(v) => setContent({ ...c, logistics: { ...c.logistics, colorPaletteTitle: v } })} />
             {c.logistics.colorPalette.map((swatch, si) => (
               <div key={si} className="grid gap-2 sm:grid-cols-2">
@@ -484,26 +517,6 @@ export function AdminDashboard() {
                   }}
                 />
               </div>
-            ))}
-            <ImagePickerField
-              label="Photo du couple (logistique)"
-              value={c.logistics.coupleImage}
-              folder="logistics"
-              onChange={(v) =>
-                setContent({ ...c, logistics: { ...c.logistics, coupleImage: v } })
-              }
-            />
-            {c.logistics.venuesLines.map((line, i) => (
-              <Field
-                key={i}
-                label={`Lieu ligne ${i + 1}`}
-                value={line}
-                onChange={(v) => {
-                  const venuesLines = [...c.logistics.venuesLines];
-                  venuesLines[i] = v;
-                  setContent({ ...c, logistics: { ...c.logistics, venuesLines } });
-                }}
-              />
             ))}
             <p className="pt-4 text-xs font-semibold uppercase text-muted">Hébergements par tranche</p>
             {c.logistics.tiers.map((tier, ti) => (

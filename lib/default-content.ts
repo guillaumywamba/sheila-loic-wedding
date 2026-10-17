@@ -104,21 +104,24 @@ export const defaultSiteContent: SiteContent = {
         image:
           "https://images.fillout.com/orgid-472067/flowpublicid-mde81vgch5/widgetid-default/kTVsveHecSS27WkQHEVZty/pasted-image-1783869639006-66552grx.png",
         imageAlt: "Mariage Traditionnel",
-        logisticsTitle: "Détails Logistique",
+        logisticsTitle: "Détail Logistique",
         logisticsDetails:
-          "Chers invités, nous avons le plaisir de vous convier à notre mariage traditionnel qui se tiendra le Vendredi 02 Avril 2027 à 15h00 au domicile familial des parents de Sheila, à Bonabéri derrière FOKOU, Douala. Tenue : traditionnelle ou élégante (voir palette de couleurs ci-dessous). Nous avons hâte de partager avec vous ce moment de joie, de tradition et de célébration. Sheila & Loïc",
+          "Chers invités, nous avons le plaisir de vous convier à notre mariage traditionnel qui se tiendra le Vendredi 02 Avril 2027 à 15h00 au domicile familial des parents de Sheila, à Bonabéri derrière FOKOU, Douala. Tenue : traditionnelle ou élégante (voir dress code). Nous avons hâte de partager avec vous ce moment de joie, de tradition et de célébration. Sheila & Loïc",
       },
       {
         id: "religieux",
         title: "Mariage Religieux",
         date: "Samedi 03 Avril 2027",
         startTime: "14h00",
-        location: "Bientôt disponible",
+        location: "Église EEC Douala",
         image:
           "https://images.fillout.com/472067/mde81vgch5/generated-images/whuZuxYN1x6C6ijjSoSUjv/img_Os5QqzcsGfHNWmVF.jpg",
         imageAlt: "Mariage Religieux",
-        logisticsTitle: "Détails Logistique",
-        logisticsDetails: "Détails logistiques bientôt disponibles...",
+        logisticsTitle: "Détail Logistique",
+        logisticsDetails:
+          "Chers invités, nous vous convions à la cérémonie religieuse. Merci d’arriver au moins 30 minutes avant le début.",
+        mapsUrl:
+          "https://www.google.com/maps/search/?api=1&query=Eglise+EEC+Douala",
       },
       {
         id: "soiree",
@@ -129,8 +132,11 @@ export const defaultSiteContent: SiteContent = {
         image:
           "https://images.fillout.com/472067/mde81vgch5/generated-images/uVjYo8V2bEnd1fefx5WJRq/img_C2pk6UOubSsp3vN9.jpg",
         imageAlt: "Soirée",
-        logisticsTitle: "Détails Logistique",
-        logisticsDetails: "Détails logistiques bientôt disponibles...",
+        logisticsTitle: "Détail Logistique",
+        logisticsDetails:
+          "Chers invités, la soirée se déroulera au SAPHIR GROUP EVENT à Makepe petit Pays. Tenue chic et glamour (vert et rose poudré).",
+        mapsUrl:
+          "https://www.google.com/maps/search/?api=1&query=Saphir+Group+Makepe+Douala",
       },
     ],
   },
@@ -145,7 +151,10 @@ export const defaultSiteContent: SiteContent = {
     ],
     dressCodeTitle: "Dress Code",
     dressCode:
-      "Tissu pagne pour la dot, chic et glamour pour la soirée en s’inspirant de la palette de couleurs ci-dessous (verts et rose poudré).",
+      "Tissu pagne pour la dot, chic et glamour pour la soirée (verts et rose poudré, voir photo ci-dessous).",
+    dressCodeImage: "/images/dress-code-reference.png",
+    dressCodeImageAlt:
+      "Exemple de tenue — costume vert et robe rose poudré pour la soirée",
     colorPaletteTitle: "Palette de couleurs",
     colorPalette: [
       { hex: "#123524", label: "Vert forêt" },

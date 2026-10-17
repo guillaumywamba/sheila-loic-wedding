@@ -38,6 +38,7 @@ export type EventItem = {
   imageAlt: string;
   logisticsTitle: string;
   logisticsDetails: string;
+  mapsUrl?: string;
 };
 
 export type ColorSwatch = {
@@ -52,6 +53,8 @@ export type LogisticsContent = {
   venuesLines: string[];
   dressCodeTitle: string;
   dressCode: string;
+  dressCodeImage: string;
+  dressCodeImageAlt: string;
   colorPaletteTitle: string;
   colorPalette: ColorSwatch[];
   accommodationTitle: string;
