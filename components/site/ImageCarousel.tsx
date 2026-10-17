@@ -24,14 +24,17 @@ export function ImageCarousel({
   const next = () => setIndex((i) => (i + 1) % images.length);
 
   return (
-    <div className={`relative overflow-hidden rounded-xl ${className}`}>
+    <div
+      className={`relative w-full overflow-hidden rounded-xl shadow-md ${className}`}
+    >
       <div className={`relative w-full ${aspectClass}`}>
         <Image
           src={images[index].url}
           alt={images[index].alt}
           fill
           className="object-contain object-center bg-neutral-100"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 640px"
+          priority={index === 0}
         />
       </div>
       {images.length > 1 && (

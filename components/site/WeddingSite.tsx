@@ -62,8 +62,8 @@ export function WeddingSite({ content }: Props) {
       </section>
 
       <section className="py-16 md:py-24">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2 md:px-6 md:gap-12">
-          <div>
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2 md:items-start md:px-6 md:gap-14 lg:gap-16">
+          <div className="md:pt-2">
             <h2 className="font-display text-3xl text-primary md:text-4xl">
               {c.welcome.title}
             </h2>
@@ -78,7 +78,11 @@ export function WeddingSite({ content }: Props) {
               {c.welcome.signature}
             </p>
           </div>
-          <ImageCarousel images={c.welcome.carouselImages} />
+          <ImageCarousel
+            images={c.welcome.carouselImages}
+            className="mx-auto w-full max-w-xl md:max-w-none"
+            aspectClass="aspect-[3/4] min-h-[420px] sm:min-h-[480px] md:min-h-[560px] lg:min-h-[620px]"
+          />
         </div>
       </section>
 
