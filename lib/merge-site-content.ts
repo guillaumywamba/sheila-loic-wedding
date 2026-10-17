@@ -1,6 +1,20 @@
 import { defaultSiteContent } from "@/lib/default-content";
 import { normalizeLogisticsTitle } from "@/lib/event-logistics-text";
-import type { GiftPaymentMethod, SiteContent } from "@/types/site";
+import type { ColorSwatch, GiftPaymentMethod, SiteContent } from "@/types/site";
+
+function mergeColorPalette(
+  stored: ColorSwatch[] | undefined,
+  defaults: ColorSwatch[],
+): ColorSwatch[] {
+  return defaults.map((def, index) => {
+    const fromStored = stored?.[index];
+    if (!fromStored) return def;
+    return {
+      hex: fromStored.hex?.trim() || def.hex,
+      label: fromStored.label?.trim() || def.label,
+    };
+  });
+}
 
 function mergePaymentMethods(
   stored: GiftPaymentMethod[] | undefined,
@@ -44,10 +58,10 @@ export function mergeSiteContent(stored: SiteContent): SiteContent {
       stored.logistics.dressCodeImage?.trim() || d.logistics.dressCodeImage,
     dressCodeImageAlt:
       stored.logistics.dressCodeImageAlt ?? d.logistics.dressCodeImageAlt,
-    colorPalette:
-      stored.logistics.colorPalette?.length > 0
-        ? stored.logistics.colorPalette
-        : d.logistics.colorPalette,
+    colorPalette: mergeColorPalette(
+      stored.logistics.colorPalette,
+      d.logistics.colorPalette,
+    ),
     colorPaletteTitle:
       stored.logistics.colorPaletteTitle ?? d.logistics.colorPaletteTitle,
   };
