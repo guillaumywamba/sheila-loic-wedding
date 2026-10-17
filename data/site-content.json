@@ -299,7 +299,7 @@
       {
         "id": "paypal",
         "title": "PayPal",
-        "details": "Scannez le QR code ou cliquez sur le QR code ",
+        "details": "Scannez le QR code ou maintenez un appui prolongé sur le QR code ",
         "qrCodeUrl": "https://xnjkqne9jtagvgnv.public.blob.vercel-storage.com/gifts/1792184919899-IMG_7507.jpeg",
         "linkUrl": "loicongassa@gmail.com",
         "email": ""
