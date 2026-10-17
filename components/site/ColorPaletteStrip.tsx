@@ -10,33 +10,34 @@ export function ColorPaletteStrip({ title, swatches, centered }: Props) {
   if (!swatches.length) return null;
 
   return (
-    <div className="mt-6 border-t border-black/5 pt-6">
+    <div className="mt-8 border-t border-black/5 pt-8">
       <p
-        className={`font-display text-sm text-primary md:text-base ${centered ? "text-center" : ""}`}
+        className={`font-display text-base text-primary md:text-lg ${centered ? "text-center" : ""}`}
       >
         {title}
       </p>
-      <div
-        className={`mt-4 flex flex-wrap items-center gap-3 md:gap-4 ${centered ? "justify-center" : "justify-center sm:justify-start"}`}
+      <ul
+        className={`mx-auto mt-5 grid max-w-md grid-cols-5 gap-3 px-1 sm:max-w-lg sm:gap-4 md:max-w-xl ${centered ? "" : ""}`}
+        aria-label={title}
       >
         {swatches.map((swatch) => (
-          <div
+          <li
             key={swatch.hex + (swatch.label ?? "")}
-            className="flex flex-col items-center gap-2"
-            title={swatch.label ?? swatch.hex}
+            className="flex min-w-0 flex-col items-center gap-1.5 sm:gap-2"
           >
             <span
-              className="h-11 w-11 rounded-full border-2 border-white shadow-md ring-1 ring-black/10 md:h-14 md:w-14"
+              className="h-10 w-10 shrink-0 rounded-full border-2 border-white shadow-md ring-1 ring-black/10 sm:h-12 sm:w-12 md:h-14 md:w-14"
               style={{ backgroundColor: swatch.hex }}
+              title={swatch.label ?? swatch.hex}
             />
             {swatch.label ? (
-              <span className="max-w-[4.5rem] text-center text-[10px] leading-tight text-muted md:text-xs">
+              <span className="w-full text-center text-[9px] leading-tight text-muted sm:text-[10px] md:text-xs">
                 {swatch.label}
               </span>
             ) : null}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

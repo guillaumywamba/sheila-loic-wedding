@@ -21,16 +21,16 @@ export function AccommodationSection({ title, subtitle, tiers }: Props) {
       ) : null}
       {subtitle ? <p className="mt-1 text-sm text-muted">{subtitle}</p> : null}
 
-      <div className="mt-6 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="mt-6 flex flex-wrap justify-center gap-2 px-1 sm:gap-3">
         {tiers.map((t, i) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setActive(i)}
-            className={`shrink-0 rounded-lg px-4 py-2 text-sm font-semibold transition ${
+            className={`rounded-full px-4 py-2.5 text-xs font-semibold transition sm:text-sm ${
               i === active
-                ? "bg-primary text-white"
-                : "bg-secondary/40 text-foreground hover:bg-secondary/60"
+                ? "bg-primary text-white shadow-sm"
+                : "bg-secondary/50 text-foreground hover:bg-secondary/70"
             }`}
           >
             {t.priceRange}
@@ -38,8 +38,7 @@ export function AccommodationSection({ title, subtitle, tiers }: Props) {
         ))}
       </div>
 
-      <h4 className="mt-6 font-display text-lg text-primary">{tier.priceRange}</h4>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {tier.hotels.map((hotel) => (
           <a
             key={hotel.name + hotel.address}
