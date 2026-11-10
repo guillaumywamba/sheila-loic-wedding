@@ -44,7 +44,7 @@
   "hero": {
     "image": "https://images.fillout.com/orgid-472067/flowpublicid-mde81vgch5/widgetid-default/oRwTmK3D4B6eH2A28gLm1W/pasted-image-1783864681994-z1y64ser.jpg",
     "imageAlt": "Wedding",
-    "eyebrow": "Nous nous marions",
+    "eyebrow": "Nous nous marions ",
     "title": "Sheila & Loïc",
     "subtitle": "Scellent leur union sacrée devant Dieu et les Hommes",
     "dateLabel": "DU 02 AU 03 AVRIL 2027",
@@ -155,10 +155,6 @@
       {
         "hex": "#F2DCC4",
         "label": "Pêche clair"
-      },
-      {
-        "hex": "",
-        "label": ""
       }
     ],
     "accommodationTitle": "Hébergement des invités",
